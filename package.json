@@ -1,0 +1,18 @@
+{
+  "name": "bzs_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dcloudio/uni-ui": "0.0.8",
+    "async-validator-uniapp": "^1.1.0",
+    "jquery.jedate": "^6.0.2",
+    "tki-qrcode": "^0.1.3"
+  }
+}

@@ -1,0 +1,220 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页,
+		 {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}, 
+		{
+			"path": "pages/reg/reg",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/main/main",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/customer/bar",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/quote/renewalDeatil",
+			"style": {
+				"navigationBarTitleText": "查询详情"
+			}
+		},
+		{
+			"path": "pages/customer/customerList",
+			"style": {
+				"navigationBarTitleText": "客户列表"
+			}
+		},
+		{
+			"path": "pages/pwd/pwd",
+			"style": {
+				"navigationBarTitleText": "找回密码"
+			}
+		}, {
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}, {
+			"path": "pages/customer/setCustomer/setCustomer",
+			"style": {
+				"navigationBarTitleText": "编辑客户资料"
+			}
+		}, {
+			"path": "pages/customer/addLabel/addLabel",
+			"style": {
+				"navigationBarTitleText": "设置标签"
+			}
+		}, {
+			"path": "pages/quote/choiceInsurance/choiceInsurance",
+			"style": {
+				"navigationBarTitleText": "选择险种"
+			}
+		}, {
+			"path": "pages/quote/relationInfo/relationInfo",
+			"style": {
+				"navigationBarTitleText": "关系人信息"
+			}
+		}, {
+			"path": "pages/quote/choiceCompany/choiceCompany",
+			"style": {
+				"navigationBarTitleText": "选择保险公司"
+			}
+		}, {
+			"path": "pages/quote/setRelation/setRelation",
+			"style": {}
+		}, {
+			"path": "pages/quote/precisionQuote/precisionQuote",
+			"style": {}
+		}, {
+			"path": "pages/quote/quoteDetail/quoteDetail",
+			"style": {}
+		}, {
+			"path": "pages/quote/followInfo/followInfo",
+			"style": {}
+		}, {
+			"path": "pages/quote/confirmRelation/confirmRelation",
+			"style": {}
+		}, {
+			"path": "pages/quote/perfectOrder/perfectOrder",
+			"style": {}
+		}, {
+			"path": "pages/quote/deliveryInfo/deliveryInfo",
+			"style": {}
+		}, {
+			"path": "pages/order/orderStatus/orderStatus",
+			"style": {}
+		}, {
+			"path": "pages/order/orderDetail/orderDetail",
+			"style": {}
+		}, {
+			"path": "pages/order/insuredDetail/insuredDetail",
+			"style": {}
+		}, {
+			"path": "pages/order/waitPay/waitPay",
+			"style": {}
+		}, {
+			"path": "pages/user/orderList/orderList",
+			"style": {}
+		}, {
+			"path": "pages/user/quoteRecord/quoteRecord",
+			"style": {}
+		}, {
+			"path": "pages/user/quoteInfo/quoteInfo",
+			"style": {}
+		}
+	    ,{
+            "path" : "pages/reg/regReview/regReview",
+            "style" : {}
+        },{
+            "path" : "pages/quote/choiceQuoteCarModel/choiceQuoteCarModel",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/quote/sendMsg/sendMsg",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/setting/setting",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/problem/problem",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/customer/search/search",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/myProxy/myProxy",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/proxyDetail/proxyDetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/commission",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/commissionDetail/commissionDetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/amountSetting/amountSetting",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/withdraw/withdraw",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/withdrawSuccess/withdrawSuccess",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/commissionList/commissionList",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/amountList/amountList",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/withdrawAnnal/withdrawAnnal",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/verified/verified",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/commission/todayCommission/todayCommission",
+            "style" : {}
+        }
+    ],
+	"tabBar": {
+		"color": "#7a7e83",
+		"selectedColor": "#0faeff",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/main/main",
+			"text": "车险报价",
+			"iconPath": "static/img/home.png",
+			"selectedIconPath": "static/img/homeHL.png"
+		}, {
+			"pagePath": "pages/customer/customerList",
+			"text": "客户列表",
+			"iconPath": "static/img/user.png",
+			"selectedIconPath": "static/img/userHL.png"
+		}, {
+			"pagePath": "pages/user/user",
+			"text": "我的",
+			"iconPath": "static/img/user.png",
+			"selectedIconPath": "static/img/userHL.png"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarBackgroundColor": "#0081ff",
+		"navigationBarTitleText": "bzs",
+		"navigationBarTextStyle": "white",
+		"navigationStyle": "custom"
+	},
+	"usingComponts": true,
+	"networkTimeout": {
+		"request": 200000
+	}
+}
