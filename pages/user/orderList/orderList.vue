@@ -11,7 +11,6 @@
 					{{item}}
 				</view>
 			</view>
-
 			<!-- <view>
 				<view class="padding-bottom-xs bg-grey light"></view>
 				<view class="flex padding-sm align-center solid-bottom">
@@ -40,39 +39,44 @@
 		 -->
 		</scroll-view>
 		<view class="center">
-			<view v-for="(item) in list">
-				<view class="padding-bottom-xs bg-grey light"></view>
-				<view class="flex padding-sm align-center solid-bottom">
-					<view class="basis-xs radius">
-						<view class="cu-avatar xl round" :style="item.imgUrl"></view>
-						<!-- 						<view class="cu-avatar xl round" style="background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png);"></view> -->
-					</view>
-					<view class="basis-xl radius">
-						<view class="flex justify-between align-center">
-							<view class="text-xl">{{item.car_number}}</view>
-							<view class="text-red">{{item.pay_status}}</view>
+			<view v-if="list!=''">
+				<view v-for="(item) in list">
+					<view class="padding-bottom-xs bg-grey light"></view>
+					<view class="flex padding-sm align-center solid-bottom">
+						<view class="basis-xs radius">
+							<view class="cu-avatar xl round" :style="item.imgUrl"></view>
+							<!-- 						<view class="cu-avatar xl round" style="background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png);"></view> -->
 						</view>
-						<view class="text-gray margin-top-sm flex">车型:
-							<view class="text-cut radius" style="width:220px">{{item.brand_model}}</view>
-						</view>
-						<view class="flex justify-between align-center margin-top-sm">
-							<view class="text-gray">投保人:{{item.license_owner}}</view>
-							<view>
-								<text class="text-price text-xl text-progress">{{item.pay_money}}</text>
+						<view class="basis-xl radius">
+							<view class="flex justify-between align-center">
+								<view class="text-xl">{{item.car_number}}</view>
+								<view class="text-red">{{item.pay_status}}</view>
+							</view>
+							<view class="text-gray margin-top-sm flex">车型:
+								<view class="text-cut radius" style="width:220px">{{item.brand_model}}</view>
+							</view>
+							<view class="flex justify-between align-center margin-top-sm">
+								<view class="text-gray">投保人:{{item.license_owner}}</view>
+								<view>
+									<text class="text-price text-xl text-progress">{{item.pay_money}}</text>
+								</view>
 							</view>
 						</view>
 					</view>
+					<view class="flex padding-sm justify-between align-center solid-bottom" v-if="item.pay_status=='待支付'">
+						<view class="text-lg text-grey">过期时间:{{item.pay_end_date}}</view>
+						<view class="text-red"><button class="cu-btn lg line-blue" @tap="toPay(item)">去支付</button></view>
+					</view>
+					<view class="flex padding-sm justify-between align-center solid-bottom" v-else>
+						<view class="text-lg text-grey">取消原因:{{item.cancel_msg}}</view>
+						<view class="text-red"><button class="cu-btn lg line-red" @tap="toPay(item)">重新报价</button></view>
+					</view>
 				</view>
-				<view class="flex padding-sm justify-between align-center solid-bottom" v-if="item.pay_status=='待支付'">
-					<view class="text-lg text-grey">过期时间:{{item.pay_end_date}}</view>
-					<view class="text-red"><button class="cu-btn lg line-blue" @tap="toPay(item)">去支付</button></view>
-				</view>
-				<view class="flex padding-sm justify-between align-center solid-bottom" v-else>
-					<view class="text-lg text-grey">取消原因:{{item.cancel_msg}}</view>
-					<view class="text-red"><button class="cu-btn lg line-red" @tap="toPay(item)">重新报价</button></view>
-				</view>
+				<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 			</view>
-			<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
+			<view class="padding text-center" v-if="list==''">
+				<text>暂无记录</text>
+			</view>
 		</view>
 
 	</view>

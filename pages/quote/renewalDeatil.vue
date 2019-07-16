@@ -203,20 +203,24 @@
 			<button class="cu-btn bg-blue lg" @tap="toQuoteDetail" v-if="!stat">查看报价详情</button>
 		</view>
 
-
-		<view class="cu-timeline" v-if="!but">
-			<view class="cu-time">06-12</view>
-			<view class="cu-item">
-				<view class="content">
-					<view class="cu-capsule radius">
-						<view class="cu-tag bg-cyan">13:59:16</view>
-					</view>
-					<view class="margin-top">
-						<view class="">跟跟状态：</view>
-						<view class="">下次跟进时间：</view>
-						<view class="">本次跟进内容：</view>
+		<view class="center" v-if="!but">
+			<view class="cu-timeline" v-if="followInfoList!=''" v-for="item in followInfoList">
+				<view class="cu-time">{{item.date}}</view>
+				<view class="cu-item">
+					<view class="content" v-for="f in item.children">
+						<view class="cu-capsule radius">
+							<view class="cu-tag bg-cyan">{{f.createTime}}</view>
+						</view>
+						<view class="margin-top">
+							<view class="">跟跟状态：{{f.followStat}}</view>
+							<view class="">下次跟进时间：{{f.nextFollowDate}}</view>
+							<view class="">本次跟进内容：{{f.followContent}}</view>
+						</view>
 					</view>
 				</view>
+			</view>
+			<view class="padding text-center" v-if="followInfoList==''">
+				<text>暂无跟进记录</text>
 			</view>
 		</view>
 		<view v-if="!but" class="whirte text-sl radius" @tap="toFollow">
@@ -226,11 +230,15 @@
 </template>
 
 <script>
+	import tuiSticky from "@/components/sticky/sticky"
 	import date from '../../comment/similar.js'
 	import {
 		uniIcon
 	} from '@dcloudio/uni-ui'
 	export default {
+		components: {
+			tuiSticky
+		},
 		data() {
 			return {
 				detail: {},
@@ -244,12 +252,33 @@
 				scrollLeft: 0,
 				array: ['查询详情', '跟进记录'],
 				isSelect: false,
+				carInfoId: '',
+				followInfoList: {},
+				scrollTop:0
 			}
 		},
 		methods: {
-			toFollow(e){
+			getFollowInfoByCarInfoId() {
+				let param = {
+					carInfoId: this.carInfoId
+				}
+				this.$http.post(this.$api.getFollowInfoByCarInfoId, param).then(e => {
+					console.log(e);
+					if (e.code == 200) {
+						this.followInfoList = e.data.list
+						for (var i = 0; i < this.followInfoList.length; i++) {
+							this.followInfoList[i].date = date.followDate(this.followInfoList[i].date)
+							for (var j = 0; j < this.followInfoList[i].children.length; j++) {
+								this.followInfoList[i].children[j].createTime = date.followTime(this.followInfoList[i].children[j].createTime)
+								this.followInfoList[i].children[j].nextFollowDate = date.formatDate(this.followInfoList[i].children[j].nextFollowDate)
+							}
+						}
+					}
+				})
+			},
+			toFollow(e) {
 				uni.navigateTo({
-					url: 'followInfo/followInfo',
+					url: 'followInfo/followInfo?carInfoId=' + this.carInfoId,
 					success: res => {},
 					fail: () => {},
 					complete: () => {}
@@ -257,11 +286,11 @@
 			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
-				console.log(e.currentTarget.dataset.id);
 				if (this.TabCur == 0) {
 					this.but = true
 				} else {
 					this.but = false
+					this.getFollowInfoByCarInfoId()
 				}
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
@@ -275,7 +304,6 @@
 			},
 			follow() {
 				this.but = !this.but
-				console.log(123);
 			},
 			toSetCustomer() {
 				uni.navigateTo({
@@ -299,7 +327,6 @@
 					carInfoId: e
 				}
 				this.$http.post(this.$api.userDetails, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.map = e.data
 						this.map.carInfo.createdTime = date.formatDate(this.map.carInfo.createdTime)
@@ -356,28 +383,36 @@
 		components: {
 			uniIcon
 		},
-		onLoad(option) {
-			if (option.carInfoId) {
-				this.userDetails(option.carInfoId)
+		onLoad(e) {
+			if (e.carInfoId) {
+				this.carInfoId = e.carInfoId
+				this.userDetails(e.carInfoId)
 				this.show = true
 				this.isSelect = true
 			} else {
-				this.detail = JSON.parse(option.detail)
-				console.log(this.detail);
+				this.detail = JSON.parse(e.detail)
 				this.getData()
 			}
-			// console.log(dateFtt("yyyy-MM-dd hh:mm:ss",new Date()));
-			// console.log(this.detail.biBeginDate.toLocaleString());
+		},
+		onShow() {
+			if (!this.but) {
+				this.getFollowInfoByCarInfoId()
+			}
+		},
+		//页面滚动执行方式
+		onPageScroll(e) {
+			this.scrollTop= e.scrollTop
 		}
 	}
 </script>
 
 <style lang="scss">
-	.whirte{
-		position: absolute ;
+	.whirte {
+		position: absolute;
 		bottom: 20%;
 		right: 10%;
 	}
+
 	.home {
 		display: flex;
 		height: 100vh;

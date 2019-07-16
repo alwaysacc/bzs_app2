@@ -1,5 +1,5 @@
 <template>
-	<view class="home1">
+	<view class="home">
 		<!-- <view class="cu-bar search bg-gradual-blue">
 			<text class="cuIcon-back" @tap="back">返回</text>
 			<view class="search-form round">
@@ -16,27 +16,32 @@
 			<block slot="backText">返回</block>
 			<block slot="content">报价记录</block>
 		</cu-custom>
-		<view class="" v-for="(item,index) in list" @tap="toQuoteInfo(item)">
-			<view class="flex justify-between align-center padding solid-bottom solid-top">
-				<view>{{item.carNumber}}</view>
-				<view>{{item.brandModel}}</view>
-			</view>
-			<view class="padding">
-				<view v-if="item.quoteInfoList==''" class="padding text-center">
-					无报价信息
+		<view v-if="list!=''">
+			<view class="" v-for="(item,index) in list" @tap="toQuoteInfo(item)">
+				<view class="flex justify-between align-center padding solid-bottom solid-top">
+					<view>{{item.carNumber}}</view>
+					<view>{{item.brandModel}}</view>
 				</view>
-				<view class="grid col-3 text-df" v-for="i in item.quoteInfoList" v-else>
-					<view class="text-gray">{{i.quoteInsuranceName}}</view>
-					<view class="text-center" v-if="i.total!=null"><text class="text-price text-green">{{i.total}}</text></view>
-					<view class="text-center" v-else><text class="text-red">报价失败</text></view>
-					<view class="text-right " :class="i.submitStatus==1?'text-green':'text-red'">
-						{{i.submitStatus==1?'核保成功':'核保失败'}}
+				<view class="padding">
+					<view v-if="item.quoteInfoList==''" class="padding text-center">
+						无报价信息
+					</view>
+					<view class="grid col-3 text-df" v-for="i in item.quoteInfoList" v-else>
+						<view class="text-gray">{{i.quoteInsuranceName}}</view>
+						<view class="text-center" v-if="i.total!=null"><text class="text-price text-green">{{i.total}}</text></view>
+						<view class="text-center" v-else><text class="text-red">报价失败</text></view>
+						<view class="text-right " :class="i.submitStatus==1?'text-green':'text-red'">
+							{{i.submitStatus==1?'核保成功':'核保失败'}}
+						</view>
 					</view>
 				</view>
+				<view class="padding-bottom-sm bg-grey light"></view>
 			</view>
-			<view class="padding-bottom-sm bg-grey light"></view>
+			<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 		</view>
-		<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
+		<view class="padding text-center" v-if="list==''">
+			<text>暂无记录</text>
+		</view>
 	</view>
 </template>
 
@@ -53,7 +58,7 @@
 				size: 5,
 				page: 1,
 				maxPage: 0,
-				map:{}
+				map: {}
 			}
 		},
 		methods: {
@@ -63,10 +68,10 @@
 				})
 			},
 			toQuoteInfo(e) {
-				
-				let carInfoId=e.carInfoId
+
+				let carInfoId = e.carInfoId
 				uni.navigateTo({
-					url: '../../quote/renewalDeatil?carInfoId='+carInfoId,
+					url: '../../quote/renewalDeatil?carInfoId=' + carInfoId,
 					success: res => {},
 					fail: () => {},
 					complete: () => {}

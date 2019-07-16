@@ -233,6 +233,10 @@
 			toSendMsg() {
 				this.map.quote = ''
 				this.map.quote = this.quote
+				delete this.map.insuredList
+				delete this.map.insuredInfo
+				this.map.quote.payUrl=''
+				console.log(this.map);
 				uni.navigateTo({
 					url: '../sendMsg/sendMsg?map=' + JSON.stringify(this.map),
 					success: res => {},
@@ -246,30 +250,28 @@
 				if (this.tax) {
 					if (this.bu) {
 						a = (this.bu / 100 * this.quote.bizPremiumByDis / 1.06).toFixed(2)
-						console.log(a);
 					}
 					if (this.fu) {
 						b = (this.fu / 100 * this.quote.forceTotal / 1.06).toFixed(2)
-						console.log(b);
 					}
 				} else {
 					if (this.bu) {
 						a = (this.bu / 100 * this.quote.bizPremiumByDis).toFixed(2)
-						console.log(a);
 					}
 					if (this.fu) {
 						b = (this.fu / 100 * this.quote.forceTotal).toFixed(2)
-						console.log(b);
 					}
 				}
 
 				this.amount = (Number(a) + Number(b)).toFixed(2)
 				this.price = (this.quote.total - this.amount).toFixed(2)
 				this.calculateStat = true
-				console.log(this.amount);
-				console.log(this.price);
 			},
 			toQuote2() {
+				delete this.map.quote
+				delete this.map.PquoteList
+				delete this.map.TquoteList
+				delete this.map.RquoteList
 				uni.navigateTo({
 					url: '../../quote/choiceInsurance/choiceInsurance?map=' + JSON.stringify(this.map),
 					success: res => {},
@@ -289,9 +291,7 @@
 					submitGroup: this.quote.quoteSource,
 					quoteId: this.quote.quoteId
 				}
-				console.log(param);
 				this.$http.post(this.$api.Ws_GetSubmitInfo, param).then((e1) => {
-					console.log(e1);
 					if (e1.code == 200) {}
 					this.getQuoteDetail(this.carInfoId)
 					uni.hideLoading()
@@ -299,7 +299,7 @@
 			},
 			toFollow() {
 				uni.navigateTo({
-					url: '../followInfo/followInfo',
+					url: '../followInfo/followInfo?carInfoId=' + this.carInfoId,
 					success: res => {},
 					fail: () => {},
 					complete: () => {}
@@ -347,9 +347,7 @@
 									fail: () => {},
 									complete: () => {}
 								});
-								console.log('用户点击确定');
 							} else if (res.cancel) {
-								console.log('用户点击取消');
 							}
 						},
 						fail: () => {},
@@ -359,7 +357,6 @@
 				}
 				this.map.imgUrl = this.imgUrl
 				this.map.quote = this.quote
-				console.log(this.map);
 				uni.navigateTo({
 					url: '../confirmRelation/confirmRelation',
 					success: res => {},
@@ -387,7 +384,6 @@
 					uni.hideLoading()
 					if (e.code == 200) {
 						for (var i = 0; i < e.data.quote.length; i++) {
-							console.log(e.data.quote[i])
 							if (e.data.quote[i].quoteSource == this.source) {
 								this.quote = e.data.quote[i]
 							}
@@ -397,7 +393,6 @@
 						}
 						this.map = e.data
 						console.log(this.map);
-						console.log(this.quote);
 					} else {
 						uni.showToast({
 							title: '获取失败',
@@ -411,7 +406,6 @@
 						uni.hideLoading()
 						t.loading = true
 					}, 1000)
-					console.log(e);
 				})
 			},
 			see(e) {
@@ -435,18 +429,15 @@
 			let t = this
 			if (ops.from === 'button') {
 				// 来自页面内转发按钮
-				console.log(ops.target)
 			}
 			return {
 				title: '【' + t.map.carInfo.carNumber + '】' + '车险报价单',
 				path: 'pages/main/main?sss=' + 'adsasd',
 				success: function(res) {
 					// 转发成功
-					console.log("转发成功:" + JSON.stringify(res));
 				},
 				fail: function(res) {
 					// 转发失败
-					console.log("转发失败:" + JSON.stringify(res));
 				}
 			}
 		}

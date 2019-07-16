@@ -1,5 +1,5 @@
 <template>
-	<view class="home1">
+	<view class="home">
 		<cu-custom bgColor="bg-gradual-blue" :isBack="false" :isCustom="true">
 			<block slot="left">客户列表</block>
 			<block slot="content">客户列表</block>
@@ -33,8 +33,7 @@
 							<view class="cu-item" v-for="(item,index) in array" :key="index">
 								<label class="flex justify-between align-center flex-sub">
 									<view class="flex-sub"> {{item}}</view>
-									<radio class="round" :class="radio==index?'checked':''" :checked="radio==index?true:false"
-									 :value="index"></radio>
+									<radio class="round" :class="radio==index?'checked':''" :checked="radio==index?true:false" :value="index+''"></radio>
 								</label>
 							</view>
 						</view>
@@ -48,8 +47,7 @@
 							<view class="cu-item" v-for="(item,index) in array1" :key="index">
 								<label class="flex justify-between align-center flex-sub">
 									<view class="flex-sub"> {{item}}</view>
-									<radio class="round" :class="radio==index?'checked':''" :checked="radio==index?true:false"
-									 :value="index"></radio>
+									<radio class="round" :class="radio1==index?'checked':''" :checked="radio1==index?true:false" :value="index+''"></radio>
 								</label>
 							</view>
 						</view>
@@ -58,14 +56,14 @@
 			</view>
 			<view class="cu-modal drawer-modal justify-end" :class="modalName=='DrawerModalR'?'show':''" @tap="hideModal">
 				<view class="cu-dialog basis-lg" @tap.stop="" :style="[{top:CustomBar+'px',height:'calc(100vh - ' + CustomBar + 'px)'}]">
-					<view class="text-left  padding-left padding-top padding-right">
+					<!-- 	<view class="text-left  padding-left padding-top padding-right">
 						<text class="text-bold text-xl">续保状态</text>
 						<view class="margin-top-sm flex justify-between">
 							<button class="cu-btn margin-right-xs" :class="Istat==1?'line-red':'line-black'" @tap="choice('I',1)">快递保单</button>
 							<button class="cu-btn margin-right-xs" :class="Istat==2?'line-red':'line-black'" @tap="choice('I',2)">网点配送</button>
 							<button class="cu-btn " :class="Istat==3?'line-red':'line-black'" @tap="choice('I',3)">网点自取</button>
 						</view>
-					</view>
+					</view> -->
 					<view class="text-left padding-left padding-top padding-right">
 						<text class="text-bold text-xl">上年投保公司</text>
 						<view class="margin-top-sm  flex justify-between">
@@ -109,34 +107,39 @@
 					</view>
 				</view>
 			</view>
-			<view v-for="(item) in list" @tap="toDetail(item)">
-				<view class="bg-grey light padding-bottom-xs"></view>
-				<view class="padding">
-					<view class="flex justify-between align-center">
-						<text class="text-xxl text-bold">
-							{{item.car_number}}
-						</text>
-						<text v-if="item.overTime<0">已脱保</text>
-						<text v-else-if="item.overTime!=''">据到期<text class="text-red">{{item.overTime}}</text>天</text>
-						<text v-else>未到期</text>
-					</view>
-					<view class="text-xm text-gray">
-						<view class="padding-top-xs">
-							品牌型号:{{item.brand_model}}
+			<view v-if="list!=''">
+				<view v-for="(item) in list" @tap="toDetail(item)">
+					<view class="bg-grey light padding-bottom-xs"></view>
+					<view class="padding">
+						<view class="flex justify-between align-center">
+							<text class="text-xxl text-bold">
+								{{item.car_number}}
+							</text>
+							<text v-if="item.overTime<0">已脱保</text>
+							<text v-else-if="item.overTime!=''">据到期<text class="text-red">{{item.overTime}}</text>天</text>
+							<text v-else>未到期</text>
 						</view>
-						<view class="padding-top-xs padding-bottom">
-							车主姓名:{{item.license_owner}}
+						<view class="text-xm text-gray">
+							<view class="padding-top-xs">
+								品牌型号:{{item.brand_model}}
+							</view>
+							<view class="padding-top-xs padding-bottom">
+								车主姓名:{{item.license_owner}}
+							</view>
 						</view>
-					</view>
-					<view class="flex justify-between align-center padding-top">
-						<text class="">
-							未跟进
-						</text>
-						<text class="text-gray">{{item.CREATED_TIME}}</text>
+						<view class="flex justify-between align-center padding-top">
+							<text class="">
+								未跟进
+							</text>
+							<text class="text-gray">{{item.CREATED_TIME}}</text>
+						</view>
 					</view>
 				</view>
+				<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 			</view>
-			<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
+			<view class="padding text-center" v-if="list==''">
+				<text>暂无记录</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -154,9 +157,9 @@
 				CustomBar: this.CustomBar,
 				modalName: null,
 				item: '全部客户',
-				item1:'录入时间最近',
+				item1: '录入时间最近',
 				array: ['全部客户', '续保期客户'],
-				array1: ['录入时间最近', '到期时间最近', '下次跟进时间最近'],
+				array1: ['录入时间最近', '到期时间最近'],
 				Qstat: '',
 				Istat: '',
 				Tstat: '',
@@ -167,44 +170,42 @@
 				isLoad: true,
 				list: [],
 				maxPage: 0,
-				showSearch:false,
-				radio:'',
-				carNoOrName:''
+				showSearch: false,
+				radio: '',
+				radio1:'',
+				carNoOrName: '',
 			}
 		},
 		methods: {
-			search(){
-				let param={
+			search() {
+				let param = {
 					accountId: this.user.accountId,
 					roleId: this.user.roleId,
 				}
-				if(date.isChinese(this.carNoOrName)){
-					param.lincenseOwner=this.carNoOrName
-				}else{
-					param.carNumber=this.carNoOrName
+				if (date.isChinese(this.carNoOrName)) {
+					param.lincenseOwner = this.carNoOrName
+				} else {
+					param.carNumber = this.carNoOrName
 				}
 				this.$http.post(this.$api.searchUserList, param).then((e) => {
-					console.log(e);
-					if(e.code==200){
-						this.list={}
+					if (e.code == 200) {
+						this.list = {}
 						this.list = e.data
 						for (var i = 0; i < this.list.length; i++) {
-							this.list[i].CREATED_TIME=date.formatDate(this.list[i].CREATED_TIME)
-							if (this.list[i].next_busines_start_date != null) {
-								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].next_busines_start_date))
-							} else if (this.list[i].next_force_start_date != null) {
-								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].next_force_start_date))
+							this.list[i].CREATED_TIME = date.formatDate(this.list[i].CREATED_TIME)
+							if (this.list[i].busines_expire_date != null) {
+								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].busines_expire_date))
+							} else if (this.list[i].force_expire_date != null) {
+								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].force_expire_date))
 							} else {
 								this.$set(this.list[i], 'overTime', '')
 							}
 						}
-						console.log(this.list);
 					}
 				})
-				console.log(param);
 			},
-			toSetRelation(){
-				this.showSearch=!this.showSearch
+			toSetRelation() {
+				this.showSearch = !this.showSearch
 			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
@@ -213,14 +214,14 @@
 				this.modalName = null
 			},
 			RadioChange(e) {
-				this.item=this.array[e.detail.value]
+				this.item = this.array[e.detail.value]
 				this.radio = e.detail.value
-				console.log(e);
+				this.getUserList(1)
 			},
 			RadioChange1(e) {
-				this.item1=this.array1[e.detail.value]
-				this.radio = e.detail.value
-				console.log(this.radio);
+				this.item1 = this.array1[e.detail.value]
+				this.radio1 = e.detail.value
+				this.getUserList(1)
 			},
 			choice(e1, e2) {
 				//this.stat = e
@@ -241,8 +242,6 @@
 						this.Fstat = e2
 						break;
 				}
-				console.log(e1);
-				console.log(e2);
 			},
 			close() {
 				this.modalName = ''
@@ -254,10 +253,9 @@
 				this.Qstat = ''
 				this.Tstat = ''
 			},
-			toDetail(e){
-				console.log(e.car_info_id);
+			toDetail(e) {
 				uni.navigateTo({
-					url: '../quote/renewalDeatil?carInfoId='+e.car_info_id,
+					url: '../quote/renewalDeatil?carInfoId=' + e.car_info_id,
 					success: res => {},
 					fail: () => {},
 					complete: () => {}
@@ -268,32 +266,33 @@
 					accountId: this.user.accountId,
 					roleId: this.user.roleId,
 					page: this.page,
-					size: this.size
+					size: this.size,
+					selectType:this.radio,
+					orderByDate:this.radio1
 				}
 				this.$http.post(this.$api.getUserList, param).then((e) => {
 					if (e.code == 200) {
 						//this.list=e.data.list
 						if (e1 == 1) {
-							this.list={}
+							this.list = {}
 							this.list = e.data.list
 						} else {
 							this.list = this.list.concat(e.data.list)
 						}
-						console.log(this.list);
 						for (var i = 0; i < this.list.length; i++) {
-							this.list[i].CREATED_TIME=date.formatDate(this.list[i].CREATED_TIME)
-							if (this.list[i].next_busines_start_date != null) {
-								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].next_busines_start_date))
-							} else if (this.list[i].next_force_start_date != null) {
-								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].next_force_start_date))
+							this.list[i].CREATED_TIME = date.formatDate(this.list[i].CREATED_TIME)
+							if (this.list[i].busines_expire_date != null) {
+								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].busines_expire_date))
+							} else if (this.list[i].force_expire_date != null) {
+								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].force_expire_date))
 							} else {
 								this.$set(this.list[i], 'overTime', '')
 							}
-
 						}
-						console.log(this.list);
 						this.maxPage = e.data.pages
+						uni.hideLoading()
 					} else {
+						uni.hideLoading()
 						uni.showToast({
 							title: '获取失败，请稍后再试',
 							icon: 'none',
@@ -309,17 +308,13 @@
 			this.getUserList(1)
 		},
 		onReachBottom() {
-			this.isLoad=false
-			console.log(this.page);
-			console.log(this.maxPage);
+			this.isLoad = false
 			if (this.page < this.maxPage) {
 				this.page += 1
-				console.log(this.page);
 				this.getUserList()
 			} else {
 				this.isLoad = true
 			}
-			console.log(222);
 		},
 		components: {
 			popupLayer
@@ -328,17 +323,6 @@
 </script>
 
 <style lang="scss">
-	.home {
-		display: flex;
-		overflow-y: hidden;
-		display: -webkit-flex;
-		/* vh 相对于可视区域的高度 */
-		/* 设置主轴方向 */
-		flex-direction: column;
-		background-color: #FFFFFF;
-		height: 100%;
-	}
-
 	.cu-modal.drawer-modal .cu-dialog {
 		height: 100%;
 		min-width: 80%;

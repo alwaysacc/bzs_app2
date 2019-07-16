@@ -13,30 +13,40 @@
 			</view>
 		</scroll-view>
 		<view v-if="TabCur==0">
-			<view class="padding flex justify-between solids-bottom">
-				<text>车牌号</text>
-				<text>保费</text>
-				<text class="padding-right">佣金</text>
+			<view v-if="list!=''">
+				<view class="padding flex justify-between solids-bottom">
+					<text>车牌号</text>
+					<text>保费</text>
+					<text class="padding-right">佣金</text>
+				</view>
+				<view class="padding flex justify-between solids-bottom" v-for="item in list" @tap="toDetail(item)">
+					<text>{{item.car_number}}</text>
+					<text>￥{{item.total}}</text>
+					<text> ￥{{item.biz_cash+item.force_cash}} <text class="cuIcon-right"></text></text>
+				</view>
+				<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 			</view>
-			<view class="padding flex justify-between solids-bottom" v-for="item in list" @tap="toDetail(item)">
-				<text>{{item.car_number}}</text>
-				<text>￥{{item.total}}</text>
-				<text> ￥{{item.biz_cash+item.force_cash}} <text class="cuIcon-right"></text></text>
+			<view class="padding text-center" v-if="list==''">
+				<text>暂无记录</text>
 			</view>
-			<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 		</view>
 		<view v-else>
-			<view class="padding flex justify-between solids-bottom">
-				<text>代理人</text>
-				<text class="">保费</text>
-				<text class="padding-right">提成</text>
+			<view v-if="list!=''">
+				<view class="padding flex justify-between solids-bottom">
+					<text>代理人</text>
+					<text class="">保费</text>
+					<text class="padding-right">提成</text>
+				</view>
+				<view class="padding flex justify-between solids-bottom" v-for="item in list">
+					<text>{{item.user_name}}</text>
+					<text>￥{{item.biz_total}}</text>
+					<text> ￥{{item.cash}}</text>
+				</view>
+				<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 			</view>
-			<view class="padding flex justify-between solids-bottom" v-for="item in list">
-				<text>{{item.user_name}}</text>
-				<text>￥{{item.biz_total}}</text>
-				<text> ￥{{item.cash}}</text>
+			<view class="padding text-center" v-if="list==''">
+				<text>暂无记录</text>
 			</view>
-			<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 		</view>
 	</view>
 </template>
@@ -64,13 +74,13 @@
 				if (this.TabCur != e.currentTarget.dataset.id) {
 					this.TabCur = e.currentTarget.dataset.id;
 					this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-					this.list=''
+					this.list = ''
 					this.getList()
 				}
 			},
 			toDetail(e) {
 				uni.navigateTo({
-					url: '../commissionDetail/commissionDetail?detail='+JSON.stringify(e),
+					url: '../commissionDetail/commissionDetail?detail=' + JSON.stringify(e),
 					success: res => {},
 					fail: () => {},
 					complete: () => {}
@@ -84,7 +94,6 @@
 					size: this.size
 				}
 				this.$http.post(this.$api.getDrawCashList, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.list = e.data.list
 						for (var i = 0; i < this.list.length; i++) {
@@ -93,27 +102,23 @@
 						}
 						this.maxPage = e.data.pages
 					}
-					console.log(this.list);
 				})
 
 			}
 		},
 		onReachBottom() {
-			this.isLoad=false
+			this.isLoad = false
 			if (this.page < this.maxPage) {
 				this.page += 1
-				console.log(this.page);
 				this.getList()
 			} else {
 				this.isLoad = true
 			}
-			console.log(222);
 		},
 		onShow() {
 			this.getList()
 		}
 	}
-
 </script>
 
 <style>

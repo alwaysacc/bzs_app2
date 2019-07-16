@@ -64,7 +64,7 @@
 				</view>
 			</form>
 		</view>
-		<view class="padding solids-bottom">
+		<!-- <view class="padding solids-bottom">
 			<view class="flex justify-between  align-center">
 				<view>
 					<view class="flex align-center">
@@ -88,7 +88,7 @@
 					<button v-else class="cu-btn bg-blue lg" style="width: 50%;" @tap="save(1)">保存</button>
 				</view>
 			</form>
-		</view>
+		</view> -->
 	</view>
 </template>
 

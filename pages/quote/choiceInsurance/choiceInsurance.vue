@@ -559,7 +559,6 @@
 						} else if (num == num22) {
 							this.BuJiMianSanZhe = 1
 						} else if (num == num3) {
-							console.log(num3);
 							this.DaoQiang = 1
 						} else if (num == num33) {
 							this.BuJiMianDaoQiang = 1
@@ -624,7 +623,6 @@
 				}
 			},
 			setA(e) {
-				console.log(e)
 				switch (e) {
 					case 'MA':
 						if (this.BuJiMianCheSun == 1) {
@@ -694,8 +692,6 @@
 					this.SanZhe = this.Barray[this.Bindex].replace('万', '0000')
 					this.BuJiMianSanZhe = 1
 				}
-				console.log(this.SanZhe)
-				console.log(this.BuJiMianSanZhe)
 			},
 			D3change(e) {
 				this.D3index = e.detail.value
@@ -718,7 +714,6 @@
 					this.ChengKe = this.D4array[this.D3index].replace('万', '0000')
 					this.BuJiMianChengKe = 1
 				}
-				console.log(this.D4);
 			},
 			Fchange(e) {
 				this.Findex = e.detail.value
@@ -735,7 +730,6 @@
 						this.BoLi = 2
 						break;
 				}
-				console.log(this.F);
 			},
 			Q3change(e) {
 				this.Q3index = e.detail.value
@@ -752,7 +746,6 @@
 						this.HcXiuLiChang = 0.15
 						break;
 				}
-				console.log(this.Q3);
 			},
 			Lchange(e) {
 				this.Lindex = e.detail.value
@@ -765,17 +758,14 @@
 					this.HuaHen = this.Larray[this.Lindex].replace('万', '0000')
 					this.HuaHen = this.Larray[this.Lindex].replace('千', '000')
 				}
-				console.log(this.L);
 			},
 			bindDateChange: function(e) {
 				this.GLtime = e.target.value
 			},
 			biDateChange: function(e) {
-				console.log(e.target.value);
 				this.detail.UserInfo.BusinessExpireDate = e.target.value
 			},
 			ciDateChange: function(e) {
-				console.log(e.target.value);
 				this.detail.UserInfo.ForceExpireDate = e.target.value
 			},
 			setModel() {
@@ -786,7 +776,6 @@
 				switch (e) {
 					case 1:
 						this.isGL = !this.isGL
-						console.log(this.isGL)
 						break;
 					case 'JQ':
 						if (this.FORCEPREMIUM.insuredAmount == 'Y') {
@@ -881,7 +870,6 @@
 					default:
 						break;
 				}
-				//console.log(e1)
 			},
 			next() {
 				if (this.FORCEPREMIUM.insuredAmount != 'Y' && !this.SY) {
@@ -970,7 +958,6 @@
 					}
 				}
 				/* 	this.$http.post(this.$api.Ws_GetPostPrecisePrice, param, 1).then((e) => {
-						console.log(e);
 					}) */
 				uni.navigateTo({
 					url: '../relationInfo/relationInfo?param=' + JSON.stringify(param)
@@ -997,7 +984,6 @@
 					}
 				}
 				
-				console.log(param);
 				uni.navigateTo({
 					url: '../choiceQuoteCarModel/choiceQuoteCarModel?param=' + JSON.stringify(param),
 					success: res => {},
@@ -1149,21 +1135,13 @@
 				this.carInfo = this.map.carInfo
 				this.bistartDate = this.map.insuredInfo.nextBusinesStartDate
 				this.cistartDate = this.map.insuredInfo.nextForceStartDate
-				console.log(this.map);
-				console.log(this.bistartDate);
 				this.listInsur(this.map.insuredList)
 			} else {
 				this.detail = JSON.parse(e.detail)
 				this.bistartDate = this.detail.UserInfo.BusinessExpireDate
 				this.cistartDate = this.detail.UserInfo.ForceExpireDate
-				console.log(this.detail);
-				console.log(this.detail.UserInfo.ForceExpireDate);
 				this.listmap()
 			}
-			/* //console.log(this.cistartDate.format());
-			console.log(this.detail.biBeginDate);
-			console.log(jeDate().format(this.detail.biBeginDate, 'YYYY-MM-DD'));
-			console.log(timeStampDate(new Date(), 'YYYY-MM-DD')); */
 		}
 	}
 </script>

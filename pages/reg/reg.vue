@@ -61,7 +61,7 @@
 				code: '',
 				resultCode: '',
 				stat: false,
-				mobileStat:false
+				mobileStat: false
 			}
 		},
 		methods: {
@@ -180,27 +180,35 @@
 					this.$http.post(this.$api.checkUserLoginName, param).then((e) => {
 						this.mobileStat = e.data
 					})
-				}else{
+				} else {
 					uni.showToast({
 						title: '手机号格式不正确',
 						icon: 'none'
 					});
+					return
 				}
 			},
 			// 发送验证码
 			sendCode() {
-					let param = {
-						mobile: this.accountInfo.mobile
-					}
-					this.$http.post(this.$api.getCode, param).then((e) => {
-						this.resultCode = e.data
-						console.log(e);
-						uni.showToast({
-							title: '发送成功'
-						});
-						// 开启倒计时
-						this.countDown();
-					})
+				if (!util.checkMobile(this.accountInfo.mobile)){
+					uni.showToast({
+						title: '手机号格式不正确',
+						icon: 'none'
+					});
+					return
+				}
+				let param = {
+					mobile: this.accountInfo.mobile
+				}
+				this.$http.post(this.$api.getCode, param).then((e) => {
+					this.resultCode = e.data
+					console.log(e);
+					uni.showToast({
+						title: '发送成功'
+					});
+					// 开启倒计时
+					this.countDown();
+				})
 			},
 
 			// 验证码倒计时

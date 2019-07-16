@@ -18,8 +18,8 @@
 
 			</view>
 		</view>
-		<view class="padding flex justify-between align-center solid-bottom">
-			<button class="cu-btn" :class="stat==1?'line-red':'line-black'" @tap="setAmout(1)">微信余额</button>
+		<view class="padding flex justify-around align-center solid-bottom">
+			<!-- <button class="cu-btn" :class="stat==1?'line-red':'line-black'" @tap="setAmout(1)">微信余额</button> -->
 			<button class="cu-btn" :class="stat==0?'line-red':'line-black'" @tap="setAmout(0)">支付宝</button>
 			<button class="cu-btn" :class="stat==2?'line-red':'line-black'" @tap="setAmout(2)">银行卡</button>
 		</view>

@@ -23,9 +23,7 @@ export default {
 					'content-type': contentType
 				},
 				success: (res) => {
-					if (e == null) {
-						uni.hideLoading()
-					}
+					uni.hideLoading()
 					resolve(res.data)
 				},
 				fail(e) {
@@ -57,7 +55,6 @@ export default {
 		base = host
 	},
 	getHost() {
-		console.log(this.base);
 		return 111
 	}
 }

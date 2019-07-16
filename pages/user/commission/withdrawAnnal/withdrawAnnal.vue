@@ -4,19 +4,24 @@
 			<block slot="backText" @tap="BackPage">返回</block>
 			<block slot="content">提现记录</block>
 		</cu-custom>
-		<view class="flex justify-between solid-bottom padding" v-for="item in list">
-			<view>
-				<view>提现时间：{{item.create_time}}</view>
+		<view v-if="list!=''">
+			<view class="flex justify-between solid-bottom padding" v-for="item in list">
 				<view>
-					提现金额：
-					<text class="text-price text-red">{{item.money}}</text>
+					<view>提现时间：{{item.create_time}}</view>
+					<view>
+						提现金额：
+						<text class="text-price text-red">{{item.money}}</text>
+					</view>
+				</view>
+				<view>
+					<view>{{item.status}}</view>
 				</view>
 			</view>
-			<view>
-				<view>{{item.status}}</view>
-			</view>
+			<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
 		</view>
-		<view class="cu-load bg-grey light" :class="!isLoad?'loading':'over'"></view>
+		<view class="padding text-center" v-if="list==''">
+			<text>暂无记录</text>
+		</view>
 	</view>
 </template>
 
@@ -69,7 +74,7 @@
 			}
 		},
 		onReachBottom() {
-			this.isLoad=false
+			this.isLoad = false
 			if (this.page < this.maxPage) {
 				this.page += 1
 				console.log(this.page);

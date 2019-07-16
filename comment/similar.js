@@ -1,13 +1,13 @@
 export default {
 	getBase64Image(img) {
-	     var canvas = document.createElement("canvas");
-	     canvas.width = img.width;
-	     canvas.height = img.height;
-	     var ctx = canvas.getContext("2d");
-	     ctx.drawImage(img, 0, 0, img.width, img.height);
-	     var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
-	     var dataURL = canvas.toDataURL("image/"+ext);
-	     return dataURL;
+		var canvas = document.createElement("canvas");
+		canvas.width = img.width;
+		canvas.height = img.height;
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(img, 0, 0, img.width, img.height);
+		var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+		var dataURL = canvas.toDataURL("image/" + ext);
+		return dataURL;
 	},
 	checkEmail(email) {
 		return RegExp(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/).test(
@@ -255,5 +255,25 @@ export default {
 			return strlen;
 		}
 		return param.replace(/^(.{6})(?:\d+)(.{4})$/, "$1******$2");
+	},
+	followDate(e) {
+		let d=e.substring(0,5)
+		e=e.replace(d,'')
+		return e.replace('/','-')
+	},
+	followTime(value) {
+		const date = new Date(value)
+		const y = date.getFullYear()
+		let MM = date.getMonth() + 1
+		MM = MM < 10 ? ('0' + MM) : MM
+		let d = date.getDate()
+		d = d < 10 ? ('0' + d) : d
+		let h = date.getHours()
+		h = h < 10 ? ('0' + h) : h
+		let m = date.getMinutes()
+		m = m < 10 ? ('0' + m) : m
+		let s = date.getSeconds()
+		s = s < 10 ? ('0' + s) : s
+		return h + ':' + m + ':' + s
 	}
 }

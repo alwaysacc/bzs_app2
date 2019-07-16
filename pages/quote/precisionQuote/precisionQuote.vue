@@ -238,7 +238,6 @@
 						this.rshow = true
 						break;
 				}
-				console.log(this.data);
 				this.$http.post(this.$api.Ws_GetPrecisePrice, this.data).then((e) => {
 					switch (stat) {
 						case '1':
@@ -248,7 +247,6 @@
 								if (this.tpySubmitInfo) {
 									this.data.submitGroup = 1
 									this.$http.post(this.$api.Ws_GetSubmitInfo, this.data).then((e1) => {
-										console.log(e1);
 										this.tisLoad = false
 										if (e1.code == 200) {
 											this.TqouteMsg2 = '核保成功'
@@ -274,7 +272,6 @@
 								if (this.paSubmitInfo) {
 									this.data.submitGroup = 2
 									this.$http.post(this.$api.Ws_GetSubmitInfo, this.data).then((e1) => {
-										console.log(e1);
 										this.pisLoad = false
 										if (e1.code == 200) {
 											this.PqouteMsg2 = '核保成功'
@@ -300,7 +297,6 @@
 								if (this.rbSubmitInfo) {
 									this.data.submitGroup = 4
 									this.$http.post(this.$api.Ws_GetSubmitInfo, this.data).then((e1) => {
-										console.log(e1);
 										this.risLoad = false
 										if (e1.code == 200) {
 											this.RqouteMsg2 = '核保成功'
@@ -321,7 +317,6 @@
 							break;
 					}
 					uni.hideLoading()
-					console.log(e);
 					this.msg = e.data
 
 				})
@@ -353,21 +348,16 @@
 				var prevPage = pages[pages.length - 2]; //上一个页面
 				// #ifdef MP-WEIXIN
 				this.map = prevPage.data.map
-				console.log(pages);
-				console.log(prevPage);
 				// #endif
 				// #ifdef H5
 				this.map = prevPage.map
 				// #endif
-				console.log(this.map);
 				//console.log(JSON.parse(e.quote));
 				this.setQuote(this.map.quote)
 				this.carInfoId = e.carInfoId
-				console.log(this.carInfoId);
 			} else {
 				this.show = true
 				this.param = JSON.parse(e.param)
-				console.log(this.param);
 				this.carInfoId = this.param.carInfoId
 				let list = e.companyList.split(',')
 				let list2 = e.companyList2.split(',')

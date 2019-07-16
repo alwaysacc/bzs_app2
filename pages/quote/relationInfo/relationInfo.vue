@@ -160,8 +160,6 @@
 			this.param=JSON.parse(e.param)
 			this.OBindex=this.param.personCardIDType-1
 			this.OCindex=this.param.personCardIDType-1
-			console.log(this.param);
-			console.log(prevPage);
 		},
 		components: {
 			uniNavBar

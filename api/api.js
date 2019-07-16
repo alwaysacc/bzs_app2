@@ -23,13 +23,15 @@ export const api = {
 	checkUserLoginName: 'account/info/checkUserLoginName',
 	//获取验证码
 	getCode: 'account/info/getCode',
+	//找回密码
+	updatePassWord: 'account/info/updatePassWord',
 	//注册
 	registerForWX: 'account/info/registerForWX',
 	//实名认证
 	updateUserIdCard: 'account/info/updateUserIdCard',
 	accountVerified: 'account/info/accountVerified',
 	//获取实名认证状态
-	getVerifiedStatById:'idCardImg/getVerifiedStatById',
+	getVerifiedStatById: 'idCardImg/getVerifiedStatById',
 	//获取代理人
 	getParentList: 'account/info/getParentList',
 	//修改代理人状态
@@ -52,7 +54,7 @@ export const api = {
 	//获取报价信息
 	Ws_GetPrecisePrice: 'quoteinfo/WX_GetPrecisePrice',
 	//核保
-	Ws_GetSubmitInfo: 'quoteinfo/WX_GetSubmitInfo', 
+	Ws_GetSubmitInfo: 'quoteinfo/WX_GetSubmitInfo',
 	//支付
 	Ws_GetPayAddress: 'quoteinfo/WX_GetPayAddress',
 	//确认支付
@@ -62,11 +64,14 @@ export const api = {
 	updateCarInfo: 'carinfo/updateCarInfo',
 	// 取消订单
 	WX_DoVoidPay: 'quoteinfo/WX_DoVoidPay',
-	
 	//今日佣金
 	todayCommList: 'commission/percentage/list',
-	
-	
+	//添加跟进记录
+	saveFollowInfo: 'followInfo/add',
+	//根据车辆id获取跟进信息
+	getFollowInfoByCarInfoId: 'followInfo/getFollowInfoByCarInfoId',
+
+
 }
 export default {
 	api

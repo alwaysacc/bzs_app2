@@ -13,14 +13,14 @@
 			<view v-if="isShow">
 				<view class="">
 					<view class="text-center" :data-url="img">
-						<image :src="frontList != '' ? frontList[0] : 'http://alwaysacc.club/fornt.jpg'" @tap="showModal(0)" data-target="bottomModal"
+						<image :src="frontList != '' ? frontList[0] : '../../../../static/img/front.jpg'" @tap="showModal(0)" data-target="bottomModal"
 						 mode="aspectFit"></image>
 					</view>
 					<!-- <view class="text-center">上传身份证头像面</view> -->
 				</view>
 				<view class="">
 					<view class="text-center">
-						<image :src="backList != '' ? backList[0] : 'http://alwaysacc.club/back.jpg'" @tap="showModal(1)" data-target="bottomModal"
+						<image :src="backList != '' ? backList[0] : '../../../../static/img/back.jpg'" @tap="showModal(1)" data-target="bottomModal"
 						 mode="aspectFit"></image>
 						<!-- <view class="text-center">上传身份证国徽面</view> -->
 					</view>
@@ -127,6 +127,11 @@
 								uni.showToast({
 									title: '上传成功'
 								});
+								setTimeout(function() {
+									uni.navigateBack({
+										delta: 1
+									});
+								}, 1000);
 							}
 						} else {
 							uni.showToast({
@@ -150,6 +155,12 @@
 								uni.showToast({
 									title: '上传成功'
 								});
+								setTimeout(function() {
+									uni.navigateBack({
+										delta: 1
+									});
+								}, 1000);
+								
 							}
 						} else {
 							uni.showToast({
