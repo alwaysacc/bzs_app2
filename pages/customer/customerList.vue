@@ -117,6 +117,7 @@
 							</text>
 							<text v-if="item.overTime<0">已脱保</text>
 							<text v-else-if="item.overTime!=''">据到期<text class="text-red">{{item.overTime}}</text>天</text>
+							<text v-else-if="item.overTime==-0">今日到期</text>
 							<text v-else>未到期</text>
 						</view>
 						<view class="text-xm text-gray">
@@ -172,7 +173,7 @@
 				maxPage: 0,
 				showSearch: false,
 				radio: '',
-				radio1:'',
+				radio1: '',
 				carNoOrName: '',
 			}
 		},
@@ -267,27 +268,27 @@
 					roleId: this.user.roleId,
 					page: this.page,
 					size: this.size,
-					selectType:this.radio,
-					orderByDate:this.radio1
+					selectType: this.radio,
+					orderByDate: this.radio1
 				}
 				this.$http.post(this.$api.getUserList, param).then((e) => {
 					if (e.code == 200) {
 						//this.list=e.data.list
+						for (var i = 0; i < e.data.list.length; i++) {
+							e.data.list[i].CREATED_TIME = date.formatDate(e.data.list[i].CREATED_TIME)
+							if (e.data.list[i].next_busines_start_date != null) {
+								this.$set(e.data.list[i], 'overTime', date.getBeforeDate(e.data.list[i].next_busines_start_date))
+							} else if (e.data.list[i].next_force_start_date != null) {
+								this.$set(e.data.list[i], 'overTime', date.getBeforeDate(e.data.list[i].next_force_start_date))
+							} else {
+								this.$set(e.data.list[i], 'overTime', '')
+							}
+						}
 						if (e1 == 1) {
 							this.list = {}
 							this.list = e.data.list
 						} else {
 							this.list = this.list.concat(e.data.list)
-						}
-						for (var i = 0; i < this.list.length; i++) {
-							this.list[i].CREATED_TIME = date.formatDate(this.list[i].CREATED_TIME)
-							if (this.list[i].busines_expire_date != null) {
-								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].busines_expire_date))
-							} else if (this.list[i].force_expire_date != null) {
-								this.$set(this.list[i], 'overTime', date.getBeforeDate(this.list[i].force_expire_date))
-							} else {
-								this.$set(this.list[i], 'overTime', '')
-							}
 						}
 						this.maxPage = e.data.pages
 						uni.hideLoading()
