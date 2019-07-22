@@ -97,8 +97,20 @@
 				if (this.rb) {
 					companyList2.push('4')
 				}
+				if(companyList.length==0){
+					uni.showModal({
+						title: '',
+						content: '请选择要报价的公司',
+						showCancel: false,
+						cancelText: '',
+						confirmText: '确定',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+					return false
+				}
 				this.$http.post(this.$api.Ws_GetPostPrecisePrice, this.param, 1).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						uni.navigateTo({
 							url: '../precisionQuote/precisionQuote?param=' + JSON.stringify(this.param) + '&companyList=' + companyList + '&companyList2=' + companyList2,
@@ -187,8 +199,6 @@
 			// #endif
 			this.param = JSON.parse(e.param)
 			this.swichCompany(this.param.source)
-			console.log(this.param);
-			console.log(this.insured);
 		}
 
 	}

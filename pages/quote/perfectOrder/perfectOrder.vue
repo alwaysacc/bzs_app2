@@ -145,9 +145,7 @@
 					payMent:1,
 					isGetPayWay:1
 				}
-				console.log(param);
 				this.$http.post(this.$api.Ws_GetPayAddress, param).then((e) => {
-					console.log(e);
 					if (e.code==200) {
 						this.dataInfo=e.data
 						uni.reLaunch({
@@ -180,7 +178,6 @@
 			},
 			toDetail() {
 				this.map.quote.payUrl = ''
-				console.log(this.map);
 				uni.navigateTo({
 					url: '../../order/insuredDetail/insuredDetail?map='+JSON.stringify(this.map),
 					success: res => {},
@@ -221,7 +218,6 @@
 			this.map = prevPage.map
 			// #endif
 			this.imgUrl = this.map.imgUrl
-			console.log(this.map);
 			switch (this.map.quote.quoteSource) {
 				case '1':
 					this.quoteList = this.map.TquoteList
@@ -233,7 +229,6 @@
 					this.quoteList = this.map.RquoteList
 					break;
 			}
-			console.log(this.quoteList);
 		}
 	}
 </script>

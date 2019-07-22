@@ -98,7 +98,6 @@
 					createBy: this.user.accountId
 				}
 				this.$http.post(this.$api.getCarInfoQuote, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.list = e.data.list,
 							this.maxPage = e.data.pages
@@ -110,12 +109,10 @@
 			this.isLoad = false
 			if (this.page < this.maxPage) {
 				this.page += 1
-				console.log(this.page);
 				this.getList()
 			} else {
 				this.isLoad = true
 			}
-			console.log(222);
 		},
 		onShow() {
 			this.getList()

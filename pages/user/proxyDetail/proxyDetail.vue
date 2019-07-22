@@ -57,7 +57,6 @@
 				delete this.map.loginPwd
 				let param=this.map
 				this.$http.post(this.$api.update, param).then((e) => {
-					console.log(e);
 					if (e.code==200) {
 						uni.showToast({
 							title: '保存成功',

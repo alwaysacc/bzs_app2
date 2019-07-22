@@ -114,7 +114,6 @@
 		},
 		methods: {
 			bindPickerChange: function(e) {
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
 				this.index = e.target.value
 				this.customer.customerSort= e.target.value
 			},
@@ -124,7 +123,6 @@
 					carInfoId:this.carInfoId
 				}
 				this.$http.post(this.$api.updateCustomer, param).then((e) => {
-					console.log(e)
 					if (e.code == 200) {
 						uni.hideLoading()
 						uni.showToast({

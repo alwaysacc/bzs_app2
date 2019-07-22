@@ -121,7 +121,6 @@
 				}
 				this.$http.post(this.$api.getCode, param).then((e) => {
 					this.resultCode = e.data
-					console.log(e);
 					uni.showToast({
 						title: '发送成功'
 					});

@@ -107,7 +107,6 @@
 				this.name=''
 				this.amount=''
 				this.$http.post(this.$api.saveAccount, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						uni.showToast({
 							title: '保存成功',
@@ -119,7 +118,6 @@
 						});
 					}
 				})
-				console.log(param);
 			},
 			tabSelect(e) {
 				if (e.currentTarget.dataset.id != this.TabCur) {

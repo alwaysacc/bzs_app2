@@ -184,7 +184,6 @@
 					quoteId: this.map.quoteInfo.quoteId,
 					cancelMsg: msg
 				}
-				console.log(param);
 				this.$http.post(this.$api.WX_DoVoidPay, param).then((e) => {
 					uni.hideLoading()
 					if(e.code==200){
@@ -203,13 +202,11 @@
 							complete: () => {}
 						});
 					}
-					console.log(e);
 				})
 			},
 			toDetail() {
 				this.map.quoteInfo.payUrl = ''
 				this.map.imgUrl = this.imgUrl
-				console.log(this.map);
 				uni.navigateTo({
 					url: '../insuredDetail/insuredDetail?map=' + JSON.stringify(this.map),
 					success: res => {},
@@ -243,7 +240,6 @@
 					quoteId: this.quoteId
 				}
 				this.$http.post(this.$api.getOrderDetail, param, 1).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.map = e.data
 						if (this.map.quoteInfo.bizPremiumByDis != null) {

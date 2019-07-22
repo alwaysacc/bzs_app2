@@ -76,7 +76,6 @@
 					deep: 2
 				}
 				this.$http.post(this.$api.getParentList, param).then((e) => {
-					console.log(e);
 					if(e.code==200){
 						this.none=false
 						this.list=e.data
@@ -96,7 +95,6 @@
 					fail: () => {},
 					complete: () => {}
 				});
-				console.log(e);
 			}
 		},
 		onLoad(e) {

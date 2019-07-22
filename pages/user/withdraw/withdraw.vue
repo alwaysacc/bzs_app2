@@ -160,7 +160,6 @@
 									}
 								},
 								fail: () => {
-									console.log(111);
 								},
 								complete: () => {}
 							});
@@ -220,10 +219,8 @@
 					createBy: this.user.accountId,
 				}
 				this.$http.post(this.$api.updateMoney, param).then((e) => {
-					console.log(e);
 					if(e.code==200){
 						param.payAccount=payAccount
-						console.log(param);
 						uni.navigateTo({
 							url: '../withdrawSuccess/withdrawSuccess?param='+JSON.stringify(param),
 							success: res => {},
@@ -238,7 +235,6 @@
 					accountId: this.user.accountId
 				}
 				this.$http.post(this.$api.getListById, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.list = e.data
 						for (var i = 0; i < this.list.length; i++) {
@@ -262,7 +258,6 @@
 					accountId: this.user.accountId
 				}
 				this.$http.post(this.$api.getWithdraw, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.info = e.data
 			

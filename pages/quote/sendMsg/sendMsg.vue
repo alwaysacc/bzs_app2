@@ -47,16 +47,13 @@
 		},
 		methods: {
 			itemTap(e) {
-				console.log(e)
 			},
 			click(e) {
-				console.log(e);
 			},
 			setClipboardData() {
 				uni.setClipboardData({
 					data: 'hello',
 					success: function() {
-						console.log('success');
 					}
 				});
 			}
@@ -68,7 +65,6 @@
 					this.splice(index, 1);
 				}
 			};
-			console.log(e);
 			this.map = JSON.parse(e.map)
 			switch (this.map.quote.quoteSource) {
 				case '1':
@@ -95,9 +91,7 @@
 				}
 			}
 			this.quoteList = arr
-			console.log(arr);
 			this.bujimian = amount.toFixed(2)
-			console.log(this.map);
 		},
 		onShow() {
 			if (this.textValue == '') {

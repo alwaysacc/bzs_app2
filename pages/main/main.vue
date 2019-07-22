@@ -195,14 +195,12 @@
 			},
 			keyDown(e) {
 				this.carNo = this.carNo + e
-				console.log(e);
 				if (this.carNo.length == 6) {
 					this.show = false
 				}
 			},
 			keyDown1(e) {
 				this.vinNO = this.vinNO + e
-				console.log(e);
 				if (this.vinNO.length == 18) {
 					this.show1 = false
 				}
@@ -212,7 +210,6 @@
 				this.carNo = e.toUpperCase().replace(reg, '')
 			},
 			showModal(e) {
-				console.log(e)
 				this.modalName = e.currentTarget.dataset.target
 			},
 			hideModal(e) {
@@ -233,7 +230,6 @@
 								showCancel: false,
 								success: function(res) {
 									if (res.confirm) {
-										console.log('用户点击确定');
 									}
 								}
 							});
@@ -248,7 +244,6 @@
 								showCancel: false,
 								success: function(res) {
 									if (res.confirm) {
-										console.log('用户点击确定');
 									}
 								}
 							});
@@ -270,7 +265,6 @@
 				}
 				this.$http.post(this.$api.WX_checkByCarNoOrVinNo, param, 1).then((e) => {
 					uni.hideLoading()
-					console.log(e);
 					if (e.code == 200) {
 						uni.navigateTo({
 							url: "../quote/renewalDeatil?detail=" + JSON.stringify(e.data)

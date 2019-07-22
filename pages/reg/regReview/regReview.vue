@@ -53,7 +53,6 @@
 		},
 		onLoad(e) {
 			this.map = JSON.parse(e.map)
-			console.log(this.map);
 		}
 	}
 </script>

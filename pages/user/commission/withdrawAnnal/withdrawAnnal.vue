@@ -49,7 +49,6 @@
 					size: this.size
 				}
 				this.$http.post(this.$api.getVerificationList, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.list = e.data.list
 						for (var i = 0; i < this.list.length; i++) {
@@ -77,12 +76,10 @@
 			this.isLoad = false
 			if (this.page < this.maxPage) {
 				this.page += 1
-				console.log(this.page);
 				this.getList()
 			} else {
 				this.isLoad = true
 			}
-			console.log(222);
 		},
 		onShow() {
 			this.getList()

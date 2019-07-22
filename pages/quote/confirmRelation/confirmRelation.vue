@@ -153,7 +153,6 @@
 			// #ifdef H5
 			this.map = prevPage.map
 			// #endif
-			console.log(this.map);
 		},
 		components: {}
 	}

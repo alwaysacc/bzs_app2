@@ -192,7 +192,6 @@
 				this.map.quoteInfo = this.map.quote
 				switch (parseInt(this.map.quote.quoteSource)) {
 					case 1:
-					console.log(111111111);
 						this.quoteList = this.map.TquoteList
 						break;
 					case 2:
@@ -205,7 +204,6 @@
 			} else {
 				this.quoteList = this.map.insuredList
 			}
-			console.log(this.quoteList);
 		}
 	}
 </script>

@@ -76,7 +76,6 @@
 			this.dataInfo = prevPage.data
 			// #endif
 			//JSON.stringify(e.info) */
-			console.log(e);
 			this.orderId=e.orderId
 			//this.info=JSON.parse(e.info)
 		}

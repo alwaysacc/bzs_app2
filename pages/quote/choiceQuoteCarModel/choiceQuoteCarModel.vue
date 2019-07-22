@@ -87,13 +87,10 @@
 							delta: 1
 						});
 					}
-					console.log(e);
 				})
 			},
 			set(e) {
-				console.log(e);
 				this.radio = e
-				console.log(this.radio);
 			},
 			tabSelect(e) {
 				this.TabCur = e.currentTarget.dataset.id;
@@ -102,7 +99,6 @@
 			GetNewVehicleInfo(e) {
 				e.IsNeedCarVin = 0
 				this.$http.post(this.$api.WX_GetNewVehicleInfo, e, 1).then((e) => {
-					console.log(e);
 					this.carList = e.data.Items
 					uni.hideLoading()
 				})

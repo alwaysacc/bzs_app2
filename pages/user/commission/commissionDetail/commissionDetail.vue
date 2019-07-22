@@ -50,7 +50,6 @@
 		},
 		onLoad(e) {
 			this.detail = JSON.parse(e.detail)
-			console.log(this.detail);
 			switch (this.detail.quote_source) {
 				case '1':
 					this.imgUrl = 'background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)'

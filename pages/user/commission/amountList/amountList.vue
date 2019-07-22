@@ -176,7 +176,6 @@
 				}
 				param.accountId = this.user.accountId
 				this.$http.post(this.$api.saveAccount, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						uni.showToast({
 							title: '保存成功',
@@ -192,7 +191,6 @@
 						});
 					}
 				})
-				console.log(param);
 			},
 			show(e) {
 				if (e == 0) {
@@ -220,7 +218,6 @@
 					accountId: this.user.accountId
 				}
 				this.$http.post(this.$api.getListById, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.list = e.data
 						for (var i = 0; i < this.list.length; i++) {

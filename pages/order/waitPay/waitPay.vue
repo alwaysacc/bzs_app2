@@ -92,9 +92,7 @@
 					quoteId:this.map.quoteInfo.quoteId,
 					createBy:this.user.accountId
 				}
-				console.log(param);
 				this.$http.post(this.$api.WX_GetPayResult, param, 1).then((e) => {
-					console.log(e);
 					if(e.code==200){
 						uni.showModal({
 							title: '提示',
@@ -136,7 +134,6 @@
 					orderId: e
 				}
 				this.$http.post(this.$api.getOrderDetail, param, 1).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						switch (e.data.quoteInfo.quoteSource) {
 							case '1':

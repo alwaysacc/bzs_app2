@@ -62,7 +62,6 @@
 		methods: {
 			choice(e) {
 				this.stat = e
-				console.log(e);
 			},
 			ok() {
 				var pages = getCurrentPages();
@@ -73,12 +72,10 @@
 				// 	hope_job: "test"
 				// })
 				// #ifdef MP-WEIXIN
-				console.log(prevPage.data)
 				prevPage.setData({
 					info : this.info,
 					tag : this.stat
 				})
-				console.log(prevPage.data)
 					wx.navigateBack({
 					delta:1
 				})

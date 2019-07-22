@@ -77,7 +77,6 @@
 		},
 		onLoad(e) {
 			this.map = JSON.parse(e.param)
-			console.log(JSON.parse(e.param));
 			switch (this.map.payAccount.type) {
 				case 0:
 					this.map.payAccount.type = '支付宝'

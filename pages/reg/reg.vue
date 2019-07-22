@@ -133,9 +133,7 @@
 				}
 				let param = this.accountInfo
 				param.superiorinvitecode = parseInt(this.inviteCode)
-				console.log(param);
 				this.$http.post(this.$api.registerForWX, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						uni.showToast({
 							title: '注册成功'
@@ -172,7 +170,6 @@
 				})
 			},
 			checkUserMobile() {
-				console.log(util.checkMobile(this.accountInfo.mobile));
 				if (util.checkMobile(this.accountInfo.mobile)) {
 					let param = {
 						mobile: this.accountInfo.mobile
@@ -202,7 +199,6 @@
 				}
 				this.$http.post(this.$api.getCode, param).then((e) => {
 					this.resultCode = e.data
-					console.log(e);
 					uni.showToast({
 						title: '发送成功'
 					});

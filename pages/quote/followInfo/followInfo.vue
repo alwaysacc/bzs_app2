@@ -95,9 +95,7 @@
                     this[this.type] = e.value; 
                     //选择的值
 					this.data.nextFollowDate=e.value
-                    console.log('value => '+ e.value);
                     //原始的Date对象
-                    console.log('date => ' + e.date);
                 }
             },
 			saveFollowInfo(e) {
@@ -144,7 +142,6 @@
 		},
 		onLoad(e) {
 			this.data.carInfoId = e.carInfoId
-			console.log(this.data.carInfoId);
 		}
 	}
 </script>

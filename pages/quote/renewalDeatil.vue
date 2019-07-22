@@ -263,7 +263,6 @@
 					carInfoId: this.carInfoId
 				}
 				this.$http.post(this.$api.getFollowInfoByCarInfoId, param).then(e => {
-					console.log(e);
 					if (e.code == 200) {
 						this.followInfoList = e.data.list
 						for (var i = 0; i < this.followInfoList.length; i++) {

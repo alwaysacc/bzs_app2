@@ -152,7 +152,6 @@
 					accountId: this.user.accountId
 				}
 				this.$http.post(this.$api.getWithdraw, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.info = e.data
 

@@ -106,7 +106,6 @@
 		},
 		methods: {
 			tabSelect(e) {
-				console.log(e.currentTarget.dataset.id);
 				this.TabCur = e.currentTarget.dataset.id;
 				switch (parseInt(this.TabCur)) {
 					case 0:
@@ -129,7 +128,6 @@
 				//this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 			},
 			toPay(e) {
-				console.log(e);
 				uni.navigateTo({
 					url: '../../order/orderDetail/orderDetail?orderId=' + e.order_id,
 					success: res => {},
@@ -163,7 +161,6 @@
 									this.list[i].imgUrl = 'background-image:url(http://bao.91bihu.com/resources/images/quote/pa.png)'
 									break;
 								case '4':
-									console.log(this.list[i].imgUrl);
 									this.list[i].imgUrl = 'background-image:url(http://bao.91bihu.com/resources/images/quote/rb.png)'
 									//this.list[i].imgUrl = 'background-image:url(../../../static/img/pa.png)'
 									break;
@@ -183,7 +180,6 @@
 									break;
 							}
 						}
-						console.log(this.list);
 					} else {
 						uni.showToast({
 							title: '获取失败，请稍后再试',
@@ -197,17 +193,13 @@
 
 		},
 		onReachBottom() {
-			console.log(this.page);
-			console.log(this.maxPage);
 			this.isLoad = false
 			if (this.page < this.maxPage) {
 				this.page += 1
-				console.log(this.page);
 				this.getOrderList(1)
 			} else {
 				this.isLoad = true
 			}
-			console.log(222);
 		},
 		onShow(option) {
 			switch (parseInt(this.TabCur)) {

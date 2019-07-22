@@ -146,7 +146,7 @@
 					<text class="">起保时间</text>
 				</view>
 				<view class="uni-list-cell-db">
-					<picker mode="date" :value="cistartDate" :start="cistartDate!=null?cistartDate:date"
+					<picker mode="date" :value="cistartDate" :start="date"
 					 @change="ciDateChange">
 						<view class="uni-input">{{cistartDate!=null?cistartDate:date}}
 							<text class="cuIcon-right text-gray"></text>
@@ -170,7 +170,7 @@
 					<text class="">起保时间</text>
 				</view>
 				<view class="uni-list-cell-db">
-					<picker mode="date" :value="bistartDate" :start="bistartDate!=null?bistartDate:date"
+					<picker mode="date" :value="bistartDate" :start="date"
 					 @change="biDateChange">
 						<view class="uni-input">{{bistartDate!=null?bistartDate:date}}
 							<text class="cuIcon-right text-gray"></text>
@@ -313,7 +313,7 @@
 		const date = new Date();
 		let year = date.getFullYear();
 		let month = date.getMonth() + 1;
-		let day = date.getDate();
+		let day = date.getDate()+1;
 		if (type == 'start') {
 			year = year - 60;
 		} else if (type === 'end') {
@@ -763,10 +763,12 @@
 				this.GLtime = e.target.value
 			},
 			biDateChange: function(e) {
-				this.detail.UserInfo.BusinessExpireDate = e.target.value
+				this.bistartDate=e.target.value
+				// this.detail.UserInfo.BusinessExpireDate = e.target.value
 			},
 			ciDateChange: function(e) {
-				this.detail.UserInfo.ForceExpireDate = e.target.value
+				this.cistartDate=e.target.value
+				// this.detail.UserInfo.ForceExpireDate = e.target.value
 			},
 			setModel() {
 
@@ -1134,7 +1136,13 @@
 				this.map = JSON.parse(e.map)
 				this.carInfo = this.map.carInfo
 				this.bistartDate = this.map.insuredInfo.nextBusinesStartDate
+				if(this.bistartDate<this.date){
+					this.bistartDate=this.date
+				}
 				this.cistartDate = this.map.insuredInfo.nextForceStartDate
+				if(this.cistartDate<this.date){
+					this.cistartDate=this.date
+				}
 				this.listInsur(this.map.insuredList)
 			} else {
 				this.detail = JSON.parse(e.detail)

@@ -35,7 +35,6 @@
 			getCommList() {
 				let param = {}
 				this.$http.post(this.$api.todayCommList, param).then((e) => {
-					console.log(e);
 					if (e.code == 200) {
 						this.list = e.data.list
 					}

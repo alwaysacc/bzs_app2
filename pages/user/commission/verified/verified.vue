@@ -175,7 +175,6 @@
 					accountId: this.user.accountId
 				}
 				this.$http.post(this.$api.getVerifiedStatById, param).then(e => {
-					console.log(e);
 					if (e.code == 200) {
 						if (e.data.verified_stat == 0) {
 							this.isShow = true;
@@ -300,10 +299,8 @@
 				let type;
 				if (e == 0) {
 					type = ['album'];
-					console.log(0);
 				} else {
 					type = ['camera'];
-					console.log(1);
 				}
 				uni.chooseImage({
 					count: 1, //默认9
