@@ -22,6 +22,9 @@
 					<text>品牌型号：{{map.carInfo.brandModel}}</text>
 				</view>
 				<view>
+					<text>折扣系数：{{quote.totalRate}}</text>
+				</view>
+				<view>
 					<text>交强险起保时间：{{map.insuredInfo.nextForceStartDate}}</text>
 				</view>
 				<view>
@@ -44,7 +47,37 @@
 					<text class="">{{quote.taxTotal==null?'--':'￥'+quote.taxTotal}}</text>
 				</view>
 			</view>
-			<view class="padding-sm grid solid-bottom col-2 align-center">
+			<view class="flex padding justify-between align-center">
+				<view class="action">
+					商业险
+				</view>
+				<view class="action" @tap="show">
+					{{quote.bizPremiumByDis+0==0?'--':'￥'+quote.bizPremiumByDis}}<text :class="!topStat? 'cuIcon-unfold':'cuIcon-fold'" class="text-red"></text>
+				</view>
+			</view>
+			<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom solid-bottom text-cut">
+				<text class="" v-for="(q,i) in quoteList" :key="i">{{q.insurance_name}}({{q.insurance_amount==1?'投保':q.insurance_amount}})</text>
+			</view>
+			<view class="bg" v-if="topStat">
+				<view class="flex padding-left padding-right padding-top-xs padding-bottom-xs justify-between align-center solid-bottom"
+				 v-for="(q,i) in quoteList" :key="i">
+					<view class="action">
+						<text>
+							{{q.insurance_name}}
+						</text>
+						<text v-if="q.insurance_name!='不计免赔'">
+							{{q.insurance_amount==1?'(投保)':'('+q.insurance_amount+')'}}
+						</text>
+					</view>
+					<view class="action">
+						{{q.insurance_premium}}
+					</view>	
+				</view>
+				<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom-xs solid-bottom">
+					<text class="" v-for="(q,i) in bjmList" :key="i">{{q.insurance_name}}({{q.insurance_premium}})</text>
+				</view>
+			</view>
+			<!-- 	<view class="padding-sm grid solid-bottom col-2 align-center">
 				<view class="">
 					<text class="margin-left-xs">商业险</text>
 				</view>
@@ -52,6 +85,9 @@
 					<text class="">{{quote.bizPremiumByDis+0==0?'--':'￥'+quote.bizPremiumByDis}}</text>
 				</view>
 			</view>
+			<view class="padding-right padding-left text-gray margin-top-xs text-xs padding-bottom solid-bottom text-cut">
+				<text class="" v-for="(q,i) in quoteList" :key="i">{{q.insurance_name}}({{q.insurance_amount==1?'投保':q.insurance_amount}})</text>
+			</view> -->
 			<view class="padding-sm grid solid-bottom col-2 align-center">
 				<view class="">
 					<text class="margin-left-xs">保费总额</text>
@@ -87,7 +123,7 @@
 						<text class="" v-else>{{quote.submitStatus==1?'核保成功':'核保失败'}}</text>
 					</view>
 				</view>
-				<view class="padding-sm grid solid-bottom flex align-center">
+				<view class="padding-sm grid solid-bottom flex align-center" v-if="quote.submitStatus!=1">
 					<p class="margin-left-xs" :class="sSee?'p-cut':''" @tap="see('e')">
 						核保内容:
 						<span class="font">{{quote.submitresult}}</span>
@@ -108,14 +144,13 @@
 				</view>
 				<view class="padding-xs flex align-center">
 					商业险优惠费率
-					<input type="number" @focus="buCancal" 
-					@input="sChange(0)" v-model="bu" @blur="calculate"
-					class="solids margin-left-xs" style="width: 100upx;" />
+					<input type="number" @focus="buCancal" @input="sChange(0)" v-model="bu" @blur="calculate" class="solids margin-left-xs"
+					 style="width: 100upx;" />
 					%×{{quote.bizPremiumByDis==null?'0':quote.bizPremiumByDis}}
 				</view>
 				<view class="padding-xs flex align-center">
-					交强险优惠费率<input type="number" @focus="fuCancal" @blur="calculate"
-					@input="sChange(1)" v-model="fu" class="solids margin-left-xs" style="width: 100upx;" />
+					交强险优惠费率<input type="number" @focus="fuCancal" @blur="calculate" @input="sChange(1)" v-model="fu" class="solids margin-left-xs"
+					 style="width: 100upx;" />
 					%×{{quote.forceTotal==null?'0':quote.forceTotal}}
 				</view>
 				<view class="padding-xs flex align-center">
@@ -206,10 +241,16 @@
 				fu: '',
 				amount: '',
 				price: '',
-				tax: true
+				tax: true,
+				quoteList: '',
+				topStat: false,
+				bjmList:[]
 			}
 		},
 		methods: {
+			show() {
+				this.topStat = !this.topStat
+			},
 			fuCancal() {
 				this.fu = ''
 			},
@@ -235,7 +276,7 @@
 				this.map.quote = this.quote
 				delete this.map.insuredList
 				delete this.map.insuredInfo
-				this.map.quote.payUrl=''
+				this.map.quote.payUrl = ''
 				console.log(this.map);
 				uni.navigateTo({
 					url: '../sendMsg/sendMsg?map=' + JSON.stringify(this.map),
@@ -347,8 +388,7 @@
 									fail: () => {},
 									complete: () => {}
 								});
-							} else if (res.cancel) {
-							}
+							} else if (res.cancel) {}
 						},
 						fail: () => {},
 						complete: () => {}
@@ -357,6 +397,7 @@
 				}
 				this.map.imgUrl = this.imgUrl
 				this.map.quote = this.quote
+				this.map.bjmList=this.bjmList
 				uni.navigateTo({
 					url: '../confirmRelation/confirmRelation',
 					success: res => {},
@@ -388,11 +429,48 @@
 								this.quote = e.data.quote[i]
 							}
 						}
+						this.quote.totalRate = Number(this.quote.totalRate).toFixed(4)
+						switch (Number(this.quote.quoteSource)) {
+							case 1:
+
+								this.quoteList = e.data.TquoteList
+								break;
+							case 2:
+								this.quoteList = e.data.PquoteList
+								break;
+							case 4:
+								this.quoteList = e.data.RquoteList
+								break;
+						}
+						Array.prototype.remove = function(val) {
+							var index = this.indexOf(val);
+							if (index > -1) {
+								this.splice(index, 1);
+							}
+						};
+						let price=0
+						for (var i = 0; i < this.quoteList.length; i++) {
+							if (this.quoteList[i].insurance_name == '交强险') {
+								this.quoteList.splice(i, 1)
+								i = i - 1
+							}else if(this.quoteList[i].insurance_name.indexOf("不计免") != -1 ){
+								price+=this.quoteList[i].insurance_premium
+								this.bjmList.push(this.quoteList[i])
+								this.quoteList.splice(i, 1)
+								i = i - 1
+							}
+						}
+						console.log(price);
+						let q={
+							insurance_name:'不计免赔',
+							insurance_premium:price
+						}
+						this.quoteList.push(q)
+						console.log(this.quoteList);
 						if (this.quote.quoteStatus == 0) {
 							this.quoteState = false
 						}
 						this.map = e.data
-						console.log(this.map);
 					} else {
 						uni.showToast({
 							title: '获取失败',
@@ -479,5 +557,9 @@
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 3; //需要控制的文本行数
 		overflow: hidden;
+	}
+
+	.bg {
+		background-color: #F5F5F5;
 	}
 </style>

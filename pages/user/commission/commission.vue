@@ -26,13 +26,12 @@
 				</view>
 
 			</view>
-			<view class="cu-list menu ">
-				
-				<view class="cu-item arrow" @tap="todayCommission">
+			<view class="cu-list menu ">			
+<!-- 				<view class="cu-item arrow" @tap="todayCommission">
 					<view class="content">
 						<text class="">今日佣金</text>
 					</view>
-				</view>
+				</view> -->
 				<view class="cu-item arrow" @tap="toVerfied">
 					<view class="content">
 						<text class="">实名认证</text>

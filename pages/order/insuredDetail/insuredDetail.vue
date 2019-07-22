@@ -58,20 +58,27 @@
 						{{map.quoteInfo.bizPremiumByDis}}元<text :class="!topStat? 'cuIcon-unfold':'cuIcon-fold'"></text>
 					</view>
 				</view>
-				<view class="padding-right padding-left text-gray margin-top-xs text-xs padding-bottom solid-bottom text-cut">
+				<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom solid-bottom text-cut">
 					<text class="" v-for="(q,i) in quoteList" :key="i">{{q.insurance_name}}({{q.insurance_amount==1?'投保':q.insurance_amount}})</text>
 				</view>
 				<view class="bg" v-if="topStat">
 					<view class="flex padding-left padding-right padding-top-xs padding-bottom-xs justify-between align-center solid-bottom"
 					 v-for="(q,i) in quoteList" :key="i">
 						<view class="action">
-							{{q.insurance_name}}
+							<text>
+								{{q.insurance_name}}
+							</text>
+							<text v-if="q.insurance_name!='不计免赔'">
+								{{q.insurance_amount==1?'(投保)':'('+q.insurance_amount+')'}}
+							</text>
 						</view>
 						<view class="action">
-							{{q.insurance_amount==1?'投保':q.insurance_amount}}
-						</view>
+							{{q.insurance_premium}}
+						</view>	
 					</view>
-
+					<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom-xs solid-bottom">
+						<text class="" v-for="(q,i) in map.bjmList" :key="i">{{q.insurance_name}}({{q.insurance_premium}})</text>
+					</view>
 				</view>
 				<view class="flex padding justify-between align-center solid-bottom">
 					<view class="action">

@@ -72,6 +72,12 @@
 					<text class="">邀请好友</text>
 				</button>
 			</view>
+			<view class="cu-item arrow">
+				<button class="content btn" @tap="toCommissionRole">
+					<text class="cuIcon-form"></text>
+					<text class="">提成规则</text>
+				</button>
+			</view>
 			<view class="cu-item arrow" @tap="toSetting">
 				<view class="content">
 					<text class="cuIcon-settings"></text>
@@ -137,6 +143,14 @@
 						url: '../login/login',
 					});
 				}
+			},
+			toCommissionRole(){
+				uni.navigateTo({
+					url: 'commissionRule/commissionRule',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
 			},
 			toOrderList(e) {
 				uni.navigateTo({
