@@ -1,6 +1,6 @@
 <template>
 	<view class="home">
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true" :isCustom="true">
+		<cu-custom bgColor="bg-gradual-blue" :isBack="stat" :isCustom="true">
 			<block slot="backText">返回</block>
 			<block slot="content">报价详情</block>
 		</cu-custom>
@@ -17,6 +17,9 @@
 			<view class="padding solid-bottom">
 				<view>
 					<text>车牌号：{{map.carInfo.carNumber}}</text>
+				</view>
+				<view>
+					<text>车主姓名：{{map.carInfo.licenseOwner}}</text>
 				</view>
 				<view>
 					<text>品牌型号：{{map.carInfo.brandModel}}</text>
@@ -52,7 +55,8 @@
 					商业险
 				</view>
 				<view class="action" @tap="show">
-					{{quote.bizPremiumByDis+0==0?'--':'￥'+quote.bizPremiumByDis}}<text :class="!topStat? 'cuIcon-unfold':'cuIcon-fold'" class="text-red"></text>
+					{{quote.bizPremiumByDis+0==0?'--':'￥'+quote.bizPremiumByDis}}<text :class="!topStat? 'cuIcon-unfold':'cuIcon-fold'"
+					 class="text-red"></text>
 				</view>
 			</view>
 			<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom solid-bottom text-cut">
@@ -71,7 +75,7 @@
 					</view>
 					<view class="action">
 						{{q.insurance_premium}}
-					</view>	
+					</view>
 				</view>
 				<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom-xs solid-bottom">
 					<text class="" v-for="(q,i) in bjmList" :key="i">{{q.insurance_name}}({{q.insurance_premium}})</text>
@@ -96,38 +100,72 @@
 					<text class="">{{quote.total+0==0?'--':'￥'+quote.total}}</text>
 				</view>
 			</view>
-			<view v-if="amount==0">
-				<view class="padding-sm grid solid-bottom col-2 align-center">
-					<view class="">
-						<text class="margin-left-xs">报价状态</text>
+			<view v-if="stat">
+				<view v-if="amount==0">
+					<view class="padding-sm grid solid-bottom col-2 align-center">
+						<view class="">
+							<text class="margin-left-xs">报价状态</text>
+						</view>
+						<view class="text-right">
+							<text class="">{{quote.quoteStatus==0?'报价失败':'报价成功'}}</text>
+						</view>
 					</view>
-					<view class="text-right">
-						<text class="">{{quote.quoteStatus==0?'报价失败':'报价成功'}}</text>
+					<view class="padding-sm grid solid-bottom flex align-center">
+						<p class="margin-left-xs" :class="qSee?'p-cut':''" @tap="see('q')">
+							报价内容:<span class="font">{{quote.quoteResult}}</span>
+						</p>
+					</view>
+					<view class="padding-sm grid solid-bottom col-2 align-center">
+						<view class="">
+							<text class="margin-left-xs">核保状态</text>
+						</view>
+						<view class="text-right">
+							<text class="text-blue" @tap="toHeBao" v-if="quote.submitStatus==-1 &&quote.quoteStatus==1">去核保
+								<text class="text-blue cuIcon-right"></text>
+							</text>
+							<text class="text-blue" @tap="toHeBao" v-else-if="quote.submitStatus==3">重新核保</text>
+							<text class="" v-else-if="quote.quoteStatus!=1">报价失败无法核保</text>
+							<text class="" v-else>{{quote.submitStatus==1?'核保成功':'核保失败'}}</text>
+						</view>
+					</view>
+					<view class="padding-sm grid solid-bottom flex align-center" v-if="quote.submitStatus!=1">
+						<p class="margin-left-xs" :class="sSee?'p-cut':''" @tap="see('e')">
+							核保内容:
+							<span class="font">{{quote.submitresult}}</span>
+						</p>
 					</view>
 				</view>
-				<view class="padding-sm grid solid-bottom flex align-center">
-					<p class="margin-left-xs" :class="qSee?'p-cut':''" @tap="see('q')">
-						报价内容:<span class="font">{{quote.quoteResult}}</span>
-					</p>
+			</view>
+
+			<view v-if="!stat" class="padding-bottom-xs bg-grey light">
+			</view>
+			<view v-if="!stat && amount!=''" class="padding">
+				<view>保费原价: {{quote.total+0==0?'--':'￥'+quote.total}}</view>
+				<view>
+					优惠金额: ￥{{amount}}
 				</view>
-				<view class="padding-sm grid solid-bottom col-2 align-center">
-					<view class="">
-						<text class="margin-left-xs">核保状态</text>
-					</view>
-					<view class="text-right">
-						<text class="text-blue" @tap="toHeBao" v-if="quote.submitStatus==-1 &&quote.quoteStatus==1">去核保
-							<text class="text-blue cuIcon-right"></text>
-						</text>
-						<text class="text-blue" @tap="toHeBao" v-else-if="quote.submitStatus==3">重新核保</text>
-						<text class="" v-else-if="quote.quoteStatus!=1">报价失败无法核保</text>
-						<text class="" v-else>{{quote.submitStatus==1?'核保成功':'核保失败'}}</text>
+				<view>
+					优惠后价格: <text class="text-red">￥{{price}}</text>
+				</view>
+			</view>
+			<view v-if="!stat" class="flex padding justify-between align-center">
+				<view>
+					<view class=" flex align-center">
+						<view class="round lg">
+							<image src="../../../static/img/u.png" style="width: 45px; height: 45px;"></image>
+						</view>
+						<view class="margin-left-sm">
+							<view class="">{{user.userName}}</view>
+							<view>
+								<view class="text-gray text-df flex text-left justify-between align-center">
+									{{user.mobile}}
+								</view>
+							</view>
+						</view>
 					</view>
 				</view>
-				<view class="padding-sm grid solid-bottom flex align-center" v-if="quote.submitStatus!=1">
-					<p class="margin-left-xs" :class="sSee?'p-cut':''" @tap="see('e')">
-						核保内容:
-						<span class="font">{{quote.submitresult}}</span>
-					</p>
+				<view class="cu-load load-icon" @tap="toCallTel">
+					<image src="../../../static/img/tel.png" style="width: 25px; height: 25px;"></image>
 				</view>
 			</view>
 			<!-- 	<view class="padding-sm grid solid-bottom col-2 align-center">
@@ -138,7 +176,7 @@
 					<text class="">0.5</text>
 				</view>
 			</view> -->
-			<view class="margin-sm solid">
+			<view class="margin-sm solid" v-if="stat">
 				<view class="text-center padding-xs bg-grey light">
 					<text class="text-black">客户车险计算器</text>
 				</view>
@@ -169,52 +207,38 @@
 				</view>
 			</view>
 		</view>
-
-
-		<view class="head cu-bar tabbar shop padding-top" v-show="!quoteState">
-			<view class="action text-center solid-right" @tap="toFollow">
-				<view class="cuIcon-cu-image">
-					<text class="cuIcon-edit"></text>
+		<view v-if="stat">
+			<view class="head cu-bar tabbar shop padding-top" v-show="!quoteState">
+				<view class="action text-center solid-right" @tap="toFollow">
+					<view class="cuIcon-cu-image">
+						<text class="cuIcon-edit"></text>
+					</view>
+					<view class="but">跟进</view>
 				</view>
-				<view class="but">跟进</view>
+				<view class="bg-red submit lg" @tap="toQuote2">重新报价</view>
 			</view>
-			<!-- <view class="action text-center solid-right" @tap="toSendMsg">
-				<view class="cuIcon-cu-image">
-					<text class="cuIcon-mark"></text>
+			<view class="head cu-bar tabbar shop padding-top" v-show="quoteState">
+				<view class="action text-center solid-right" @tap="toFollow">
+					<view class="cuIcon-cu-image">
+						<text class="cuIcon-edit"></text>
+					</view>
+					<view class="but">跟进</view>
 				</view>
-				<view class="but">短信</view>
-			</view>
-			<view class="action text-center">
-				<button class='btn2' open-type='share'>
-					<text class="cuIcon-weixin btnImg"></text>
-					<view>微信</view>
-				</button>
-			</view>
-			<view class="bg-blue submit lg" @tap="toQuote">申请投保</view> -->
-			<view class="bg-red submit lg" @tap="toQuote2">重新报价</view>
-		</view>
-
-		<view class="head cu-bar tabbar shop padding-top" v-show="quoteState">
-			<view class="action text-center solid-right" @tap="toFollow">
-				<view class="cuIcon-cu-image">
-					<text class="cuIcon-edit"></text>
+				<view class="action text-center solid-right" @tap="toSendMsg">
+					<view class="cuIcon-cu-image">
+						<text class="cuIcon-mark"></text>
+					</view>
+					<view class="but">短信</view>
 				</view>
-				<view class="but">跟进</view>
-			</view>
-			<view class="action text-center solid-right" @tap="toSendMsg">
-				<view class="cuIcon-cu-image">
-					<text class="cuIcon-mark"></text>
+				<view class="action text-center">
+					<button class='btn2' open-type='share'>
+						<text class="cuIcon-weixin btnImg"></text>
+						<view>微信</view>
+					</button>
 				</view>
-				<view class="but">短信</view>
+				<view class="bg-blue submit lg" @tap="toQuote">申请投保</view>
+				<view class="bg-red submit lg" @tap="toQuote2">重新报价</view>
 			</view>
-			<view class="action text-center">
-				<button class='btn2' open-type='share'>
-					<text class="cuIcon-weixin btnImg"></text>
-					<view>微信</view>
-				</button>
-			</view>
-			<view class="bg-blue submit lg" @tap="toQuote">申请投保</view>
-			<view class="bg-red submit lg" @tap="toQuote2">重新报价</view>
 		</view>
 	</view>
 </template>
@@ -244,10 +268,16 @@
 				tax: true,
 				quoteList: '',
 				topStat: false,
-				bjmList:[]
+				bjmList: [],
+				stat: true
 			}
 		},
 		methods: {
+			toCallTel() {
+				uni.makePhoneCall({
+					phoneNumber: this.user.mobile //仅为示例
+				});
+			},
 			show() {
 				this.topStat = !this.topStat
 			},
@@ -397,7 +427,7 @@
 				}
 				this.map.imgUrl = this.imgUrl
 				this.map.quote = this.quote
-				this.map.bjmList=this.bjmList
+				this.map.bjmList = this.bjmList
 				uni.navigateTo({
 					url: '../confirmRelation/confirmRelation',
 					success: res => {},
@@ -407,6 +437,7 @@
 			},
 
 			getQuoteDetail(e) {
+				console.log(1111);
 				switch (this.source) {
 					case '1':
 						this.imgUrl = 'background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)'
@@ -422,6 +453,7 @@
 					carInfoId: e
 				}
 				this.$http.post(this.$api.quoteDetails, param).then((e) => {
+					console.log(e);
 					uni.hideLoading()
 					if (e.code == 200) {
 						for (var i = 0; i < e.data.quote.length; i++) {
@@ -432,7 +464,6 @@
 						this.quote.totalRate = Number(this.quote.totalRate).toFixed(4)
 						switch (Number(this.quote.quoteSource)) {
 							case 1:
-
 								this.quoteList = e.data.TquoteList
 								break;
 							case 2:
@@ -448,25 +479,26 @@
 								this.splice(index, 1);
 							}
 						};
-						let price=0
+						let price = 0
 						for (var i = 0; i < this.quoteList.length; i++) {
+							if (this.quoteList[i].insurance_amount != 1) {
+								this.quoteList[i].insurance_amount = (this.quoteList[i].insurance_amount / 10000).toFixed(2) + '万'
+							}
 							if (this.quoteList[i].insurance_name == '交强险') {
 								this.quoteList.splice(i, 1)
 								i = i - 1
-							}else if(this.quoteList[i].insurance_name.indexOf("不计免") != -1 ){
-								price+=this.quoteList[i].insurance_premium
+							} else if (this.quoteList[i].insurance_name.indexOf("不计免") != -1) {
+								price += this.quoteList[i].insurance_premium
 								this.bjmList.push(this.quoteList[i])
 								this.quoteList.splice(i, 1)
 								i = i - 1
 							}
 						}
-						console.log(price);
-						let q={
-							insurance_name:'不计免赔',
-							insurance_premium:price
+						let q = {
+							insurance_name: '不计免赔',
+							insurance_premium: price
 						}
 						this.quoteList.push(q)
-						console.log(this.quoteList);
 						if (this.quote.quoteStatus == 0) {
 							this.quoteState = false
 						}
@@ -495,10 +527,18 @@
 			}
 		},
 		onLoad(e) {
+			console.log(this.user);
 			uni.showLoading({
 				title: '拼命加载中',
 				mask: true
 			});
+			if (e.stat == 1) {
+				console.log(1);
+				this.stat = false
+				this.price = e.price
+				this.amount = e.amount
+			}
+			console.log(e);
 			this.carInfoId = e.carInfoId
 			this.source = e.source
 			this.getQuoteDetail(e.carInfoId)
@@ -510,7 +550,8 @@
 			}
 			return {
 				title: '【' + t.map.carInfo.carNumber + '】' + '车险报价单',
-				path: 'pages/main/main?sss=' + 'adsasd',
+				path: 'pages/quote/quoteDetail/quoteDetail?carInfoId=' + this.carInfoId + '&source=' + this.source + '&stat=' + 1 +
+					'&price=' + this.price + '&amount=' + this.amount,
 				success: function(res) {
 					// 转发成功
 				},

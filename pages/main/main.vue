@@ -42,11 +42,11 @@
 						<view class="title">车主证件号</view>
 						<input type="text" v-model="cardNO" @focus="close" placeholder="仅平安续保需输入证件号后6位"></input>
 					</view>
-					<view class="cu-form-group solids-bottom">
+					<view class="cu-form-group solids-bottom ">
 						<view class="title">投保地区</view>
-						<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
-							<view class="uni-input">{{array[index].name}}</view>
-						</picker>
+							<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
+								<view class="uni-input">{{array[index].name}}</view>
+							</picker>
 					</view>
 				</form>
 				<view class="btn-view">
@@ -186,11 +186,11 @@
 				this.show1 = false
 			},
 			showKey() {
-				this.carNo=''
+				this.carNo = ''
 				this.show = true
 			},
 			showKey1() {
-				this.vinNO=''
+				this.vinNO = ''
 				this.show1 = true
 			},
 			keyDown(e) {
@@ -294,7 +294,6 @@
 			},
 			bindPickerChange: function(e) {
 				this.close()
-				console.log('picker发送选择改变，携带值为：' + e.target.value)
 				this.index = e.target.value
 			},
 		},
@@ -476,5 +475,20 @@
 		overflow-x: hidden;
 		overflow-y: auto;
 		pointer-events: auto;
+	}
+	.cu-form-group picker::after {
+		font-family: none;
+		display: block;
+		content: "\e6a3";
+		position: absolute;
+		font-size: 34upx;
+		color: #FFFFFF;
+		line-height: 100upx;
+		width: 60upx;
+		text-align: center;
+		top: 0;
+		bottom: 0;
+		right: -20upx;
+		margin: auto;
 	}
 </style>

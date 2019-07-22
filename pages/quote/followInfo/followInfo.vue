@@ -14,7 +14,7 @@
 		</view>
 		<view class="cu-form-group ">
 			<view class="title">下次跟进时间</view>
-			<picker disabled  >
+			<picker disabled>
 				<view class="picker"  @click="onShowDatePicker('datetime')">
 					{{datetime}}
 				</view>
