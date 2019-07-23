@@ -6,8 +6,9 @@
 		</cu-custom>
 		<view class="center">
 			<view class="cu-form-group solid-bottom" v-if="!addressStat" @tap="toSetDelivery">
-				<view class="title">配送方式</view>
-				<view class="flex align-center">请选择
+				<view class="title">配送地址</view>
+				<view class="flex align-center">
+					编辑
 					<view class="cuIcon-right"></view>
 				</view>
 			</view>
@@ -19,7 +20,7 @@
 						<text class="margin-right">{{info.tel}}</text>
 					</view>
 					<view class="flex-sub radius">
-						<view class='cu-tag line-orange radius'>{{tagMsg}}</view>
+						<view class='cu-tag line-orange radius'>收货地址</view>
 					</view>
 				</view>
 				<view>
@@ -28,7 +29,7 @@
 			</view>
 			<view class="flex-twice padding-top padding-bottom radius text-left">
 				<view class="cu-list menu-avatar">
-					<view class="cu-item"  @tap="toDetail">
+					<view class="cu-item" @tap="toDetail">
 						<view class="cu-avatar round lg" :style="imgUrl"></view>
 						<view class="content flex-sub">
 							<view class="text-cut line-clamp1" style="width: 80%;">{{map.carInfo.carNumber}}({{map.carInfo.brandModel}})</view>
@@ -103,7 +104,7 @@
 				tag: 1,
 				tagMsg: '',
 				index: -1,
-				picker: ['保险公司', '代理账户'],
+				picker: ['保险公司'],
 				modalName: '',
 				info: {
 					name: '',
@@ -113,8 +114,8 @@
 				map: [],
 				imgUrl: '',
 				quoteList: {},
-				price:'',
-				dataInfo:[],
+				price: '',
+				dataInfo: [],
 			}
 		},
 		methods: {
@@ -130,6 +131,45 @@
 				});
 			},
 			next() {
+				if (this.info.address == '') {
+					uni.showModal({
+						title: '提示',
+						content: '请设置配送地址',
+						showCancel: false,
+						cancelText: '',
+						confirmText: '确定',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+					return
+				}
+				if (this.info.name == '') {
+					uni.showModal({
+						title: '提示',
+						content: '请设置配送地址',
+						showCancel: false,
+						cancelText: '',
+						confirmText: '确定',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+					return
+				}
+				if (this.info.tel == '') {
+					uni.showModal({
+						title: '提示',
+						content: '请设置配送地址',
+						showCancel: false,
+						cancelText: '',
+						confirmText: '确定',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+					return
+				}
 				let param = {
 					carInfoId: this.map.carInfo.carInfoId,
 					carVin: this.map.carInfo.frameNumber,
@@ -142,25 +182,28 @@
 					buid: this.map.quote.buid,
 					channelId: this.map.quote.channelId,
 					quoteId: this.map.quote.quoteId,
-					payMent:1,
-					isGetPayWay:1
+					payMent: 1,
+					isGetPayWay: 1,
+					deliveryAddress: this.info.address,
+					contactName: this.info.name,
+					contactTel: this.info.tel
 				}
 				this.$http.post(this.$api.Ws_GetPayAddress, param).then((e) => {
-					if (e.code==200) {
-						this.dataInfo=e.data
+					if (e.code == 200) {
+						this.dataInfo = e.data
 						uni.reLaunch({
-							url: '../../order/orderStatus/orderStatus?orderId='+e.data.orderId,
+							url: '../../order/orderStatus/orderStatus?orderId=' + e.data.orderId,
 							success: res => {},
 							fail: () => {},
 							complete: () => {}
 						});
-					}else{
+					} else {
 						uni.showToast({
 							title: '创建失败，请重新报价',
-							icon:'none'
+							icon: 'none'
 						});
 					}
-					
+
 				})
 				/* uni.showLoading({
 					title: '加载中',
@@ -179,7 +222,7 @@
 			toDetail() {
 				this.map.quote.payUrl = ''
 				uni.navigateTo({
-					url: '../../order/insuredDetail/insuredDetail?map='+JSON.stringify(this.map),
+					url: '../../order/insuredDetail/insuredDetail?map=' + JSON.stringify(this.map),
 					success: res => {},
 					fail: () => {},
 					complete: () => {}
@@ -196,17 +239,18 @@
 			if (this.info.address != '') {
 				this.addressStat = true
 			}
-			switch (this.tag) {
-				case 1:
-					this.tagMsg = '快递保单'
-					break;
-				case 2:
-					this.tagMsg = '网点配送'
-					break;
-				case 3:
-					this.tagMsg = '网点自取'
-					break;
-			}
+			console.log(this.info);
+			/* 			switch (this.tag) {
+							case 1:
+								this.tagMsg = '快递保单'
+								break;
+							case 2:
+								this.tagMsg = '网点配送'
+								break;
+							case 3:
+								this.tagMsg = '网点自取'
+								break;
+						} */
 		},
 		onLoad(e) {
 			var pages = getCurrentPages();

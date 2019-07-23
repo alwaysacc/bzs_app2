@@ -70,7 +70,8 @@ export const api = {
 	saveFollowInfo: 'followInfo/add',
 	//根据车辆id获取跟进信息
 	getFollowInfoByCarInfoId: 'followInfo/getFollowInfoByCarInfoId',
-
+	//轮播图
+	getListByOrderNum: 'swiper/getListByOrderNum'
 
 }
 export default {

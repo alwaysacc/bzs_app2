@@ -230,15 +230,11 @@
 </template>
 
 <script>
-	import tuiSticky from "@/components/sticky/sticky"
 	import date from '../../comment/similar.js'
 	import {
 		uniIcon
 	} from '@dcloudio/uni-ui'
 	export default {
-		components: {
-			tuiSticky
-		},
 		data() {
 			return {
 				detail: {},

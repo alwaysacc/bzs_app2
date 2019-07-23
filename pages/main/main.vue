@@ -1,7 +1,13 @@
 <template>
 	<view class="home1">
 		<view class="top">
-			<image src='../../static/img/img.jpg'></image>
+			<swiper class="screen-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
+			 :autoplay="true" interval="5000" duration="500">
+				<swiper-item v-for="(item,index) in swiperList" :key="index">
+					<image :src="item.imgUrl" mode="aspectFill"></image>
+					<video :src="item.imgUrl" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover"></video>
+				</swiper-item>
+			</swiper>
 		</view>
 		<view class="uni-padding-wrap uni-common-mt">
 			<uni-segmented-control :current="current" :values="items" :style-type="styleType" :active-color="activeColor"
@@ -44,9 +50,9 @@
 					</view>
 					<view class="cu-form-group solids-bottom ">
 						<view class="title">投保地区</view>
-							<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
-								<view class="uni-input">{{array[index].name}}</view>
-							</picker>
+						<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
+							<view class="uni-input">{{array[index].name}}</view>
+						</picker>
 					</view>
 				</form>
 				<view class="btn-view">
@@ -165,6 +171,35 @@
 				array: [{
 					name: '南京'
 				}],
+				swiperList: [{
+					id: 0,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
+				}, {
+					id: 1,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
+				}, {
+					id: 2,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg'
+				}, {
+					id: 3,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'
+				}, {
+					id: 4,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg'
+				}, {
+					id: 5,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big21016.jpg'
+				}, {
+					id: 6,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
+				}],
 			}
 		},
 		components: {
@@ -229,8 +264,7 @@
 								content: '请输入正确的车牌号',
 								showCancel: false,
 								success: function(res) {
-									if (res.confirm) {
-									}
+									if (res.confirm) {}
 								}
 							});
 							return false
@@ -243,8 +277,7 @@
 								content: '请输入正确的车架号',
 								showCancel: false,
 								success: function(res) {
-									if (res.confirm) {
-									}
+									if (res.confirm) {}
 								}
 							});
 							return false
@@ -290,6 +323,22 @@
 				this.close()
 				this.index = e.target.value
 			},
+			getListByOrderNum() {
+				let param = {
+
+				}
+				this.$http.post(this.$api.getListByOrderNum, param, 1).then((e) => {
+					console.log(e);
+					this.swiperList=e.data
+				})
+			},
+		},
+		onShow() {
+			uni.showLoading({
+				title: '正在加载',
+				mask: true
+			});
+			this.getListByOrderNum();
 		},
 		onLoad(e) {
 			if (!this.hasLogin) {
@@ -470,6 +519,7 @@
 		overflow-y: auto;
 		pointer-events: auto;
 	}
+
 	.cu-form-group picker::after {
 		font-family: none;
 		display: block;
