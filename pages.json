@@ -1,11 +1,11 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页,
-		 {
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
-		}, 
+		},
 		{
 			"path": "pages/reg/reg",
 			"style": {
@@ -113,83 +113,74 @@
 		}, {
 			"path": "pages/user/quoteInfo/quoteInfo",
 			"style": {}
+		}, {
+			"path": "pages/reg/regReview/regReview",
+			"style": {}
+		}, {
+			"path": "pages/quote/choiceQuoteCarModel/choiceQuoteCarModel",
+			"style": {}
+		}, {
+			"path": "pages/quote/sendMsg/sendMsg",
+			"style": {}
+		}, {
+			"path": "pages/user/setting/setting",
+			"style": {}
+		}, {
+			"path": "pages/user/problem/problem",
+			"style": {}
+		}, {
+			"path": "pages/customer/search/search",
+			"style": {}
+		}, {
+			"path": "pages/user/myProxy/myProxy",
+			"style": {}
+		}, {
+			"path": "pages/user/proxyDetail/proxyDetail",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/commission",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/commissionDetail/commissionDetail",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/amountSetting/amountSetting",
+			"style": {}
+		}, {
+			"path": "pages/user/withdraw/withdraw",
+			"style": {}
+		}, {
+			"path": "pages/user/withdrawSuccess/withdrawSuccess",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/commissionList/commissionList",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/amountList/amountList",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/withdrawAnnal/withdrawAnnal",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/verified/verified",
+			"style": {}
+		}, {
+			"path": "pages/user/commission/todayCommission/todayCommission",
+			"style": {}
+		}, {
+			"path": "pages/user/commissionRule/commissionRule",
+			"style": {}
+		}, {
+			"path": "pages/user/invite/invite",
+			"style": {}
+		}, {
+			"path": "pages/user/userMsg/msgDetail/msgDetail",
+			"style": {}
+		}, {
+			"path": "pages/user/userMsg/userMsg",
+			"style": {}
 		}
-	    ,{
-            "path" : "pages/reg/regReview/regReview",
-            "style" : {}
-        },{
-            "path" : "pages/quote/choiceQuoteCarModel/choiceQuoteCarModel",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/quote/sendMsg/sendMsg",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/setting/setting",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/problem/problem",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/customer/search/search",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/myProxy/myProxy",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/proxyDetail/proxyDetail",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/commission",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/commissionDetail/commissionDetail",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/amountSetting/amountSetting",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/withdraw/withdraw",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/withdrawSuccess/withdrawSuccess",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/commissionList/commissionList",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/amountList/amountList",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/withdrawAnnal/withdrawAnnal",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/verified/verified",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commission/todayCommission/todayCommission",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user/commissionRule/commissionRule",
-            "style" : {}
-        }
-    ],
+	],
 	"tabBar": {
 		"color": "#7a7e83",
 		"selectedColor": "#0faeff",

@@ -156,7 +156,8 @@
 			// #ifdef H5
 			this.insured = prevPage.insured
 			// #endif
-			//this.param=JSON.parse(e.param)
+			// this.param=JSON.parse(e.param)
+			console.log(this.insured);
 			this.param=JSON.parse(e.param)
 			this.OBindex=this.param.personCardIDType-1
 			this.OCindex=this.param.personCardIDType-1

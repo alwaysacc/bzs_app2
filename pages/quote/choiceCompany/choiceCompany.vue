@@ -110,8 +110,12 @@
 					});
 					return false
 				}
-				this.$http.post(this.$api.Ws_GetPostPrecisePrice, this.param, 1).then((e) => {
+				this.param.lists=this.insured
+				let p=this.param
+				p.lists=this.insured
+				this.$http.post(this.$api.Ws_GetPostPrecisePrice, p, 1).then((e) => {
 					if (e.code == 200) {
+						this.param.lists=''
 						uni.navigateTo({
 							url: '../precisionQuote/precisionQuote?param=' + JSON.stringify(this.param) + '&companyList=' + companyList + '&companyList2=' + companyList2,
 							success: res => {},

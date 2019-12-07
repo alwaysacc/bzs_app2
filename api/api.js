@@ -71,7 +71,15 @@ export const api = {
 	//根据车辆id获取跟进信息
 	getFollowInfoByCarInfoId: 'followInfo/getFollowInfoByCarInfoId',
 	//轮播图
-	getListByOrderNum: 'swiper/getListByOrderNum'
+	getListByOrderNum: 'swiper/getListByOrderNum',
+	
+	
+	getShowToday: 'sys/param/getShowToday',
+	
+	getRole: 'sys/param/getRole',
+	
+	getMessageList: 'message/getListByUserId',
+	updateMessageStatus: 'message/updateStatus'
 
 }
 export default {

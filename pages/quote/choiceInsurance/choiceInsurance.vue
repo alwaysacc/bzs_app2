@@ -921,7 +921,7 @@
 						carEngineNo: this.carInfo.engineNumber,
 						//salesPerson: 1,
 						carFirstRegisterDate: this.carInfo.registerDate,
-						//lists: insered,
+						// lists: this.insured,
 						source: this.map.insuredInfo.lastYearSource,
 						createdBy: this.user.accountId,
 						bistartDate: this.bistartDate,
@@ -948,7 +948,7 @@
 						carEngineNo: this.detail.UserInfo.EngineNo,
 						//salesPerson: 1,
 						carFirstRegisterDate: this.detail.UserInfo.RegisterDate,
-						//lists: insered,
+						// lists: this.insured,
 						source: this.detail.SaveQuote.Source,
 						createdBy: this.user.accountId,
 						bistartDate: this.bistartDate,
@@ -961,8 +961,11 @@
 				}
 				/* 	this.$http.post(this.$api.Ws_GetPostPrecisePrice, param, 1).then((e) => {
 					}) */
+					
+				console.log(this.insured);
+				console.log(param);
 				uni.navigateTo({
-					url: '../relationInfo/relationInfo?param=' + JSON.stringify(param)
+					url: '../relationInfo/relationInfo?param=' + JSON.stringify(param)+'&lists='+this.insured
 				})
 			},
 			toChoice() {

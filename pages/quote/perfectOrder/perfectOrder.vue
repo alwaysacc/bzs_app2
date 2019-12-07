@@ -53,7 +53,7 @@
 					</view>
 				</picker>
 			</view>
-			<view class="cu-form-group solid-bottom">
+			<!-- <view class="cu-form-group solid-bottom">
 				<view class="title">商业险优惠</view>
 				<view class="flex align-center text-right">
 					<input type="number" value="" placeholder="0.00" />%
@@ -64,7 +64,7 @@
 				<view class="flex align-center text-right">
 					<input type="number" value="" placeholder="0.00" />%
 				</view>
-			</view>
+			</view> -->
 			<view class="cu-form-group solid-bottom">
 				<view class="title">应付金额</view>
 				<view class="flex align-center text-right">
