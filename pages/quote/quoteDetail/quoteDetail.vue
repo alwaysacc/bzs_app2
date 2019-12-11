@@ -343,7 +343,7 @@
 				delete this.map.PquoteList
 				delete this.map.TquoteList
 				delete this.map.RquoteList
-				uni.navigateTo({
+				uni.reLaunch({
 					url: '../../quote/choiceInsurance/choiceInsurance?map=' + JSON.stringify(this.map),
 					success: res => {},
 					fail: () => {},

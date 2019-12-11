@@ -113,8 +113,9 @@
 				this.param.lists=this.insured
 				let p=this.param
 				p.lists=this.insured
-				this.$http.post(this.$api.Ws_GetPostPrecisePrice, p, 1).then((e) => {
+				this.$http.post(this.$api.Ws_GetPostPrecisePrice, p).then((e) => {
 					if (e.code == 200) {
+						console.log(this.param);
 						this.param.lists=''
 						uni.navigateTo({
 							url: '../precisionQuote/precisionQuote?param=' + JSON.stringify(this.param) + '&companyList=' + companyList + '&companyList2=' + companyList2,
@@ -126,6 +127,17 @@
 						uni.showModal({
 							title: '提示',
 							content: '您对同一辆车的请求过于频繁，请稍后重试',
+							showCancel: false,
+							cancelText: '',
+							confirmText: '确定',
+							success: res => {},
+							fail: () => {},
+							complete: () => {}
+						});
+					}else{
+						uni.showModal({
+							title: '提示',
+							content: '请求频繁，请稍后重试',
 							showCancel: false,
 							cancelText: '',
 							confirmText: '确定',

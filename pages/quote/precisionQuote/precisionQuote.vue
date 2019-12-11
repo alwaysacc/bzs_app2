@@ -4,178 +4,182 @@
 			<block slot="backText">返回</block>
 			<block slot="content">精准报价</block>
 		</cu-custom>
-		<view class="flex padding justify-between">
-			<view>
-				<text class="">车牌号</text>
-			</view>
-			<view class="uni-list-cell-db">
-				{{param.carNo==null?map.carInfo.carNumber:param.carNo}}
-			</view>
-		</view>
-		<view class="flex padding-left padding-right justify-between">
-			<view>
-				<text class="">交强险起保时间</text>
-			</view>
-			<view class="uni-list-cell-db">
-				{{param.cistartDate==null?map.insuredInfo.nextForceStartDate:param.cistartDate}}
-			</view>
-		</view>
-		<view class="flex padding justify-between solids-bottom">
-			<view>
-				<text class="">商业险起保时间</text>
-			</view>
-			<view class="uni-list-cell-db">
-				{{param.bistartDate==null?map.insuredInfo.nextBusinesStartDate:param.cistartDate}}
-			</view>
-		</view>
-		<view v-if="!show">
-			<view class="flex padding justify-between align-center" v-if="tQuote.quoteInsuranceName" @tap="toDeatil(1)">
+		<view class="center">
+			<view class="flex padding justify-between">
 				<view>
-					<view class=" flex align-center">
-						<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)"></view>
-						<view class="margin-left-sm">
-							<view class="">{{tQuote.quoteInsuranceName}}</view>
-							<view>
-								<view class="text-gray text-df flex text-left justify-between align-center">
-									<text class="cu-load load-icon"  :class="tQuote.quoteStatus==0?'text-red':'text-green'">{{tQuote.quoteStatus==0?'报价失败':tQuote.total}}</text>
-									<text class="margin-left text-green" v-if="tQuote.submitStatus==1">核保成功</text>
-									<text class="margin-left" v-else-if="tQuote.submitStatus==-1">未核保</text>
-									<text class="margin-left text-red" v-else>核保失败</text>
+					<text class="">车牌号</text>
+				</view>
+				<view class="uni-list-cell-db">
+					{{param.carNo==null?map.carInfo.carNumber:param.carNo}}
+				</view>
+			</view>
+			<view class="flex padding-left padding-right justify-between">
+				<view>
+					<text class="">交强险起保时间</text>
+				</view>
+				<view class="uni-list-cell-db">
+					{{param.cistartDate==null?map.insuredInfo.nextForceStartDate:param.cistartDate}}
+				</view>
+			</view>
+			<view class="flex padding justify-between solids-bottom">
+				<view>
+					<text class="">商业险起保时间</text>
+				</view>
+				<view class="uni-list-cell-db">
+					{{param.bistartDate==null?map.insuredInfo.nextBusinesStartDate:param.cistartDate}}
+				</view>
+			</view>
+			<view v-if="!show">
+				<view class="flex padding justify-between align-center" v-if="tQuote.quoteInsuranceName" @tap="toDeatil(1)">
+					<view>
+						<view class=" flex align-center">
+							<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)"></view>
+							<view class="margin-left-sm">
+								<view class="">{{tQuote.quoteInsuranceName}}</view>
+								<view>
+									<view class="text-gray text-df flex text-left justify-between align-center">
+										<text class="cu-load load-icon" :class="tQuote.quoteStatus==0?'text-red':'text-green'">{{tQuote.quoteStatus==0?'报价失败':tQuote.total}}</text>
+										<text class="margin-left text-green" v-if="tQuote.submitStatus==1">核保成功</text>
+										<text class="margin-left" v-else-if="tQuote.submitStatus==-1">未核保</text>
+										<text class="margin-left text-red" v-else>核保失败</text>
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
+					<view class="cu-load load-icon" :class="tisLoad?'loading':''">
+						<text>报价详情</text><text class="cuIcon-right"></text>
+					</view>
 				</view>
-				<view class="cu-load load-icon" :class="tisLoad?'loading':''">
-					<text>报价详情</text><text class="cuIcon-right"></text>
-				</view>
-			</view>
-			<view class="flex padding justify-between align-center" v-if="rQuote.quoteInsuranceName" @tap="toDeatil(4)">
-				<view>
-					<view class=" flex align-center">
-						<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/rb.png)"></view>
-						<view class="margin-left-sm">
-							<view class="">{{rQuote.quoteInsuranceName}}</view>
-							<view>
-								<view class="text-gray text-df flex align-center">
-									<text class="cu-load load-icon" :class="rQuote.quoteStatus==0?'text-red':'text-green'">{{rQuote.quoteStatus==0?'报价失败':rQuote.total}}</text>
-									<text class="margin-left text-green" v-if="rQuote.submitStatus==1">核保成功</text>
-									<text class="margin-left" v-else-if="rQuote.submitStatus==-1">未核保</text>
-									<text class="margin-left text-red" v-else>核保失败</text>
+				<view class="flex padding justify-between align-center" v-if="rQuote.quoteInsuranceName" @tap="toDeatil(4)">
+					<view>
+						<view class=" flex align-center">
+							<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/rb.png)"></view>
+							<view class="margin-left-sm">
+								<view class="">{{rQuote.quoteInsuranceName}}</view>
+								<view>
+									<view class="text-gray text-df flex align-center">
+										<text class="cu-load load-icon" :class="rQuote.quoteStatus==0?'text-red':'text-green'">{{rQuote.quoteStatus==0?'报价失败':rQuote.total}}</text>
+										<text class="margin-left text-green" v-if="rQuote.submitStatus==1">核保成功</text>
+										<text class="margin-left" v-else-if="rQuote.submitStatus==-1">未核保</text>
+										<text class="margin-left text-red" v-else>核保失败</text>
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
+					<view class="cu-load load-icon" :class="tisLoad?'loading':''">
+						<text>报价详情</text><text class="cuIcon-right"></text>
+					</view>
 				</view>
-				<view class="cu-load load-icon" :class="tisLoad?'loading':''">
-					<text>报价详情</text><text class="cuIcon-right"></text>
-				</view>
-			</view>
-			<view class="flex padding justify-between align-center" v-if="pQuote.quoteInsuranceName" @tap="toDeatil(2)">
-				<view>
-					<view class=" flex align-center">
-						<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/pa.png)"></view>
-						<view class="margin-left-sm">
-							<view class="">{{pQuote.quoteInsuranceName}}</view>
-							<view>
-								<view class="text-gray text-df flex align-center">
-									<text class="cu-load load-icon" :class="pQuote.quoteStatus==0?'text-red':'text-green'">{{pQuote.quoteStatus==0?'报价失败':pQuote.total}}</text>
-									<text class="margin-left text-green" v-if="pQuote.submitStatus==1">核保成功</text>
-									<text class="margin-left" v-else-if="pQuote.submitStatus==-1">未核保</text>
-									<text class="margin-left text-red" v-else>核保失败</text></view>
+				<view class="flex padding justify-between align-center" v-if="pQuote.quoteInsuranceName" @tap="toDeatil(2)">
+					<view>
+						<view class=" flex align-center">
+							<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/pa.png)"></view>
+							<view class="margin-left-sm">
+								<view class="">{{pQuote.quoteInsuranceName}}</view>
+								<view>
+									<view class="text-gray text-df flex align-center">
+										<text class="cu-load load-icon" :class="pQuote.quoteStatus==0?'text-red':'text-green'">{{pQuote.quoteStatus==0?'报价失败':pQuote.total}}</text>
+										<text class="margin-left text-green" v-if="pQuote.submitStatus==1">核保成功</text>
+										<text class="margin-left" v-else-if="pQuote.submitStatus==-1">未核保</text>
+										<text class="margin-left text-red" v-else>核保失败</text></view>
+								</view>
 							</view>
 						</view>
 					</view>
+					<view class="cu-load load-icon" :class="tisLoad?'loading':''">
+						<text>报价详情</text><text class="cuIcon-right"></text>
+					</view>
 				</view>
-				<view class="cu-load load-icon" :class="tisLoad?'loading':''">
-					<text>报价详情</text><text class="cuIcon-right"></text>
+			</view>
+			<view v-if="show">
+				<view class="flex padding justify-between align-center" v-if="tshow" @tap="toDeatil(1)">
+					<view>
+						<view class=" flex align-center">
+							<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)"></view>
+							<view class="margin-left-sm">
+								<view class="">太平洋车险</view>
+								<view>
+									<view class="text-gray text-df flex align-center">
+										<text class="cu-load load-icon" :class="tisLoad?'loading':''">
+											<text v-if="TqouteMsg1=='报价失败'" class="text-red">{{TqouteMsg1}}</text>
+											<text v-else-if="TqouteMsg1=='报价中'" class="">{{TqouteMsg1}}</text>
+											<text v-else class="text-green">{{TqouteMsg1}}</text>
+										</text>
+										<text class="margin-left">
+											<text v-if="TqouteMsg2=='核保失败'" class="text-red">{{TqouteMsg2}}</text>
+											<text v-else-if="TqouteMsg2=='核保成功'" class="text-green">{{TqouteMsg2}}</text>
+											<text v-else class="">{{TqouteMsg2}}</text>
+										</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="cu-load load-icon" :class="tisLoad?'loading':''">
+						<text>报价详情</text><text class="cuIcon-right"></text>
+					</view>
+				</view>
+				<view class="flex padding justify-between align-center" v-if="rshow" @tap="toDeatil(4)">
+					<view>
+						<view class=" flex align-center">
+							<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/rb.png)"></view>
+							<view class="margin-left-sm">
+								<view class="">人保车险</view>
+								<view>
+									<view class="text-gray text-df flex align-center">
+										<text class="cu-load load-icon" :class="risLoad?'loading':''">
+											<text v-if="RqouteMsg1=='报价失败'" class="text-red">{{RqouteMsg1}}</text>
+											<text v-else-if="RqouteMsg1=='报价中'" class="">{{RqouteMsg1}}</text>
+											<text v-else class="text-green">{{RqouteMsg1}}</text>
+										</text>
+										<text class="margin-left">
+											<text v-if="RqouteMsg2=='核保失败'" class="text-red">{{RqouteMsg2}}</text>
+											<text v-else-if="RqouteMsg2=='核保成功'" class="text-green">{{RqouteMsg2}}</text>
+											<text v-else class="">{{RqouteMsg2}}</text>
+										</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="cu-load load-icon" :class="risLoad?'loading':''">
+						<text>报价详情</text><text class="cuIcon-right"></text>
+					</view>
+				</view>
+				<view class="flex padding justify-between align-center" v-if="pshow" @tap="toDeatil(2)">
+					<view>
+						<view class=" flex align-center">
+							<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/pa.png)"></view>
+							<view class="margin-left-sm">
+								<view class="">平安车险</view>
+								<view>
+									<view class="text-gray text-df flex align-center">
+										<text class="cu-load load-icon" :class="pisLoad?'loading':''">
+											<text v-if="PqouteMsg1=='报价失败'" class="text-red">{{PqouteMsg1}}</text>
+											<text v-else-if="PqouteMsg1=='报价中'" class="">{{PqouteMsg1}}</text>
+											<text v-else class="text-green">{{PqouteMsg1}}</text>
+										</text>
+										<text class="margin-left">
+											<text v-if="PqouteMsg2=='核保失败'" class="text-red">{{PqouteMsg2}}</text>
+											<text v-else-if="PqouteMsg2=='核保成功'" class="text-green">{{PqouteMsg2}}</text>
+											<text v-else class="">{{PqouteMsg2}}</text>
+										</text>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="cu-load load-icon" :class="pisLoad?'loading':''">
+						<text>报价详情</text><text class="cuIcon-right"></text>
+					</view>
 				</view>
 			</view>
 		</view>
-		<view v-if="show">
-			<view class="flex padding justify-between align-center" v-if="tshow" @tap="toDeatil(1)">
-				<view>
-					<view class=" flex align-center">
-						<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)"></view>
-						<view class="margin-left-sm">
-							<view class="">太平洋车险</view>
-							<view>
-								<view class="text-gray text-df flex align-center">
-									<text class="cu-load load-icon" :class="tisLoad?'loading':''">
-										<text v-if="TqouteMsg1=='报价失败'" class="text-red">{{TqouteMsg1}}</text>
-										<text v-else-if="TqouteMsg1=='报价中'" class="">{{TqouteMsg1}}</text>
-										<text v-else class="text-green">{{TqouteMsg1}}</text>
-									</text>
-									<text class="margin-left">
-										<text v-if="TqouteMsg2=='核保失败'" class="text-red">{{TqouteMsg2}}</text>
-										<text v-else-if="TqouteMsg2=='核保成功'" class="text-green">{{TqouteMsg2}}</text>
-										<text v-else class="">{{TqouteMsg2}}</text>
-									</text>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="cu-load load-icon" :class="tisLoad?'loading':''">
-					<text>报价详情</text><text class="cuIcon-right"></text>
-				</view>
-			</view>
-			<view class="flex padding justify-between align-center" v-if="rshow" @tap="toDeatil(4)">
-				<view>
-					<view class=" flex align-center">
-						<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/rb.png)"></view>
-						<view class="margin-left-sm">
-							<view class="">人保车险</view>
-							<view>
-								<view class="text-gray text-df flex align-center">
-									<text class="cu-load load-icon" :class="risLoad?'loading':''">
-										<text v-if="RqouteMsg1=='报价失败'" class="text-red">{{RqouteMsg1}}</text>
-										<text v-else-if="RqouteMsg1=='报价中'" class="">{{RqouteMsg1}}</text>
-										<text v-else class="text-green">{{RqouteMsg1}}</text>
-									</text>
-									<text class="margin-left">
-										<text v-if="RqouteMsg2=='核保失败'" class="text-red">{{RqouteMsg2}}</text>
-										<text v-else-if="RqouteMsg2=='核保成功'" class="text-green">{{RqouteMsg2}}</text>
-										<text v-else class="">{{RqouteMsg2}}</text>
-									</text>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="cu-load load-icon" :class="risLoad?'loading':''">
-					<text>报价详情</text><text class="cuIcon-right"></text>
-				</view>
-			</view>
-			<view class="flex padding justify-between align-center" v-if="pshow" @tap="toDeatil(2)">
-				<view>
-					<view class=" flex align-center">
-						<view class="cu-avatar round lg" style="background-image:url(http://bao.91bihu.com/resources/images/quote/pa.png)"></view>
-						<view class="margin-left-sm">
-							<view class="">平安车险</view>
-							<view>
-								<view class="text-gray text-df flex align-center">
-									<text class="cu-load load-icon" :class="pisLoad?'loading':''">
-										<text v-if="PqouteMsg1=='报价失败'" class="text-red">{{PqouteMsg1}}</text>
-										<text v-else-if="PqouteMsg1=='报价中'" class="">{{PqouteMsg1}}</text>
-										<text v-else class="text-green">{{PqouteMsg1}}</text>
-									</text>
-									<text class="margin-left">
-										<text v-if="PqouteMsg2=='核保失败'" class="text-red">{{PqouteMsg2}}</text>
-										<text v-else-if="PqouteMsg2=='核保成功'" class="text-green">{{PqouteMsg2}}</text>
-										<text v-else class="">{{PqouteMsg2}}</text>
-									</text>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="cu-load load-icon" :class="pisLoad?'loading':''">
-					<text>报价详情</text><text class="cuIcon-right"></text>
-				</view>
-			</view>
+		<view class="head padding text-center align-center justify-center solid-bottom solids-top margin-top">
+			<button class="cu-btn bg-blue lg" @tap="toHome">返回首页</button>
 		</view>
-
 	</view>
 </template>
 
@@ -214,6 +218,11 @@
 			}
 		},
 		methods: {
+			toHome(){
+				uni.switchTab({
+				    url: '../../main/main'
+				});
+			},
 			toDeatil(e) {
 				uni.navigateTo({
 					url: '../quoteDetail/quoteDetail?carInfoId=' + this.carInfoId + '&source=' + e,
@@ -406,7 +415,8 @@
 	.pa {
 		padding-bottom: -5px;
 	}
-	.margin-left-sm .margin-left{
+
+	.margin-left-sm .margin-left {
 		margin-left: 100upx;
 	}
 </style>

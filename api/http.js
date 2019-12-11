@@ -1,6 +1,6 @@
 export default {
-	base:'http://localhost:8082/',
-	// base:'https://www.baozhishun.com/api/',
+	// base:'http://localhost:8082/',
+	base:'https://www.baozhishun.com/api/',
 	baseOptions(params, methods, e) {
 		if (e == null) {
 			uni.showLoading({

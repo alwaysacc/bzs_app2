@@ -117,7 +117,7 @@
 		<view class="head padding  align-center justify-end  solids-top margin-top" v-if="loading">
 			<!-- <button class="cu-btn  bg-white shadow" @tap="next">确认支付</button> -->
 			<button v-if="map.orderInfo.payStatus==0"  class="cu-btn  bg-red shadow lg" @tap="showModal" data-target="bottomModal">取消订单</button>
-			<button v-if="map.orderInfo.payStatus==0"  class="cu-btn bg-blue lg" @tap="toPay">去支付</button>
+			<button v-if="map.orderInfo.payStatus==0"  class="cu-btn bg-blue lg" @tap="toPay">支付二维码</button>
 			<button v-if="map.orderInfo.payStatus!=0"  class="cu-btn bg-blue lg" @tap="toQuote">重新报价</button>
 		</view>
 	</view>

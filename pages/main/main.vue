@@ -81,10 +81,15 @@
 						</picker>
 					</view>
 				</form>
+
 				<view class="btn-view">
 					<button class="cu-btn bg-blue lg" @tap="onSumit">下一步</button>
 				</view>
+
 			</view>
+		</view>
+		<view class="text-sl message" @tap="toMsg">
+			<text class="cuIcon-notice " :class="messageColor?'text-blue':'text-red'"  v-if="showMessage"></text>
 		</view>
 		<view class="key" v-if="show">
 			<view class="bg-grey light padding-top padding-bottom-sm">
@@ -200,6 +205,9 @@
 					type: 'image',
 					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
 				}],
+				showMessage:false,
+				messageColor:true,
+				interval:''
 			}
 		},
 		components: {
@@ -328,10 +336,37 @@
 
 				}
 				this.$http.post(this.$api.getListByOrderNum, param, 1).then((e) => {
-					console.log(e);
-					this.swiperList=e.data
+					this.swiperList = e.data
 				})
 			},
+			getMsgList(t) {
+				let param = {
+					userId: this.user.accountId
+				};
+				param.status = 0;
+				this.$http.post(this.$api.getMessageList, param,1).then(e => {
+					if (e.code == 200) {
+						if(e.data.list.length!=0){
+							this.messageColor=false
+							var t=this
+							this.interval=setInterval(function() {
+								t.showMessage=!t.showMessage
+							}, 500);
+						}else{
+							
+							this.messageColor=true
+							this.showMessage=true
+						}
+					}
+					console.log(e);
+				});
+			},
+			toMsg(){
+				clearInterval(this.interval) 
+				uni.navigateTo({
+					url: '../user/userMsg/userMsg'
+				})
+			}
 		},
 		onShow() {
 			uni.showLoading({
@@ -339,6 +374,7 @@
 				mask: true
 			});
 			this.getListByOrderNum();
+			this.getMsgList()
 		},
 		onLoad(e) {
 			if (!this.hasLogin) {
@@ -372,6 +408,12 @@
 </script>
 
 <style>
+	.message {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+	}
+
 	.imitate-input {
 		width: 260px;
 		height: 20px;

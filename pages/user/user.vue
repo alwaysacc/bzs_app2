@@ -71,12 +71,12 @@
 					<text class="">提成规则</text>
 				</button>
 			</view>
-			<view class="cu-item arrow">
+			<!-- <view class="cu-item arrow">
 				<button class="content btn" @tap="toMessagge">
 					<text class="cuIcon-form"></text>
 					<text class="">系统通知</text>
 				</button>
-			</view>
+			</view> -->
 			<view class="cu-item arrow" @tap="toSetting">
 				<view class="content">
 					<text class="cuIcon-settings"></text>

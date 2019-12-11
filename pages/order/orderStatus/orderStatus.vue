@@ -36,7 +36,7 @@
 		<view class="padding-bottom-sm bg-grey light"></view>
 		<view class="padding flex justify-between text-xl">
 			<button class="cu-btn bg-blue lg" @tap="toHome">返回首页</button>
-			<button class="cu-btn bg-blue lg" @tap="toDetail">查看订单详情</button>
+			<button class="cu-btn bg-blue lg" @tap="toDetail">前往支付</button>
 		</view>
 	</view>
 </template>
