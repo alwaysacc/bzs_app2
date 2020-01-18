@@ -275,5 +275,12 @@ export default {
 		let s = date.getSeconds()
 		s = s < 10 ? ('0' + s) : s
 		return h + ':' + m + ':' + s
-	}
+	},
+	dateDifference(faultDate){
+	      // let d1 = new Date(faultDate);
+	      // let d2 = new Date(completeTime);
+	      var stime =new Date(faultDate).getTime();
+	      var etime = new Date().getTime();
+	      return  parseInt((stime - etime) / 1000);;
+	   }
 }

@@ -1,7 +1,7 @@
 <template>
 	<view class="home">
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true" :isCustom="true">
-			<block slot="backText" @tap="BackPage">返回</block>
+			<block slot="backText">返回</block>
 			<block slot="content">实名认证</block>
 		</cu-custom>
 		<view class="center">
@@ -11,20 +11,46 @@
 				</view>
 			</view>
 			<view v-if="isShow">
-				<view class="">
+				<form>
+					<view class="cu-form-group">
+						<view class="title">姓名</view>
+						<input placeholder="姓名" v-model="map.name" name="input"></input>
+					</view>
+					<view class="cu-form-group">
+						<view class="title">银行卡号</view>
+						<input placeholder="银行卡号" v-model="map.bankNumber" name="input"></input>
+					</view>
+					<view class="cu-form-group">
+						<view class="title">开户行</view>
+						<input placeholder="开户行" v-model="map.bank" name="input"></input>
+					</view>
+					<view class="cu-form-group">
+						<view class="title">开户行地址</view>
+						<input placeholder="开户行地址" v-model="map.bankAddress" name="input"></input>
+					</view>
+					<view class="cu-form-group align-start">
+						<view class="title">身份证正面</view>
+							<image :src="frontList != '' ? frontList[0] : '../../../../static/img/front.jpg'" @tap="showModal(0)" data-target="bottomModal"
+							 mode="aspectFit"></image>
+					</view>
+					<view class="cu-form-group align-start">
+						<view class="title">身份证背面</view>
+						<image :src="backList != '' ? backList[0] : '../../../../static/img/back.jpg'" @tap="showModal(1)" data-target="bottomModal"
+						 mode="aspectFit"></image>
+					</view>
+				</form>
+			<!-- 	<view class="">
 					<view class="text-center" :data-url="img">
 						<image :src="frontList != '' ? frontList[0] : '../../../../static/img/front.jpg'" @tap="showModal(0)" data-target="bottomModal"
 						 mode="aspectFit"></image>
 					</view>
-					<!-- <view class="text-center">上传身份证头像面</view> -->
 				</view>
 				<view class="">
 					<view class="text-center">
 						<image :src="backList != '' ? backList[0] : '../../../../static/img/back.jpg'" @tap="showModal(1)" data-target="bottomModal"
 						 mode="aspectFit"></image>
-						<!-- <view class="text-center">上传身份证国徽面</view> -->
 					</view>
-				</view>
+				</view> -->
 				<neil-modal :show="show" @close="closeModal" :show-cancel="false" :showConfirm="false">
 					<view class="input-view text-left">
 						<view class="input-view">
@@ -50,11 +76,23 @@
 					<form>
 						<view class="cu-form-group">
 							<view class="title">姓名</view>
-							<input type="text" v-model="userName" disabled placeholder="请输入真实姓名" />
+							<input type="text" v-model="userName" disabled placeholder="" />
 						</view>
 						<view class="cu-form-group solids-bottom">
 							<view class="title">身份证号</view>
-							<input type="text" v-model="idCard" disabled placeholder="请输入身份证号" />
+							<input type="text" v-model="idCard" disabled placeholder="" />
+						</view>
+						<view class="cu-form-group solids-bottom">
+							<view class="title">银行卡号</view>
+							<input type="text" v-model="idCard" disabled placeholder="" />
+						</view>
+						<view class="cu-form-group solids-bottom">
+							<view class="title">开户行</view>
+							<input type="text" v-model="idCard" disabled placeholder="" />
+						</view>
+						<view class="cu-form-group solids-bottom">
+							<view class="title">开户行地址</view>
+							<input type="text" v-model="idCard" disabled placeholder="" />
 						</view>
 					</form>
 				</view>
@@ -80,6 +118,7 @@
 		},
 		data() {
 			return {
+				map:{},
 				userName: '',
 				idCard: '',
 				isShow: true,
@@ -97,6 +136,34 @@
 		},
 		methods: {
 			submitImg() {
+				if (this.map.name == '') {
+					uni.showToast({
+						title: '请输入姓名',
+						icon: 'none'
+					});
+					return;
+				}
+				if (this.map.bank == '') {
+					uni.showToast({
+						title: '请输入开户行',
+						icon: 'none'
+					});
+					return;
+				}
+				if (this.map.bankAddress == '') {
+					uni.showToast({
+						title: '请输入开户行地址',
+						icon: 'none'
+					});
+					return;
+				}
+				if (this.map.bankNumber == '') {
+					uni.showToast({
+						title: '请输入银行卡号',
+						icon: 'none'
+					});
+					return;
+				}
 				if (this.frontPath == '') {
 					uni.showToast({
 						title: '请选择头像面图片',
@@ -140,14 +207,13 @@
 						}
 					}
 				});
+				this.map.accountId=this.user.accountId
+				this.map.type=1
 				uni.uploadFile({
 					url: this.$http.base + this.$api.accountVerified,
 					filePath: this.backPath,
 					name: 'file',
-					formData: {
-						accountId: this.user.accountId,
-						type: 1
-					},
+					formData: this.map,
 					success: uploadFileRes => {
 						if (JSON.parse(uploadFileRes.data).code == 200) {
 							stat += 1
@@ -341,7 +407,7 @@
 
 <style>
 	.cu-form-group .title {
-		min-width: calc(4em + 15px);
+		min-width: calc(5em + 15px);
 	}
 
 	.input-name,

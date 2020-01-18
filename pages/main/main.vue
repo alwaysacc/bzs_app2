@@ -1,5 +1,8 @@
 <template>
 	<view class="home1">
+		<cu-custom bgColor="bg-gradual-blue" :isBack="true" :isCustom="true">
+			<block slot="content">车险报价</block>
+		</cu-custom>
 		<view class="top">
 			<swiper class="screen-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
 			 :autoplay="true" interval="5000" duration="500">
@@ -14,7 +17,7 @@
 			 @clickItem="onClickItem" />
 		</view>
 		<view>
-			<view v-show="current === 0">
+			<view v-show="current == 0">
 				<form>
 					<view class="cu-form-group margin-top solids-top">
 						<view class="title">车牌号码</view>
@@ -60,7 +63,7 @@
 				</view>
 
 			</view>
-			<view v-show="current === 1" class="view2">
+			<view v-show="current == 1" class="view2">
 				<form>
 					<view class="cu-form-group margin-top solids-top">
 						<view class="title">车架号</view>
@@ -87,9 +90,6 @@
 				</view>
 
 			</view>
-		</view>
-		<view class="text-sl message" @tap="toMsg">
-			<text class="cuIcon-notice " :class="messageColor?'text-blue':'text-red'"  v-if="showMessage"></text>
 		</view>
 		<view class="key" v-if="show">
 			<view class="bg-grey light padding-top padding-bottom-sm">
@@ -351,14 +351,12 @@
 							var t=this
 							this.interval=setInterval(function() {
 								t.showMessage=!t.showMessage
-							}, 500);
+							}, 1000);
 						}else{
-							
 							this.messageColor=true
 							this.showMessage=true
 						}
 					}
-					console.log(e);
 				});
 			},
 			toMsg(){
@@ -369,10 +367,6 @@
 			}
 		},
 		onShow() {
-			uni.showLoading({
-				title: '正在加载',
-				mask: true
-			});
 			this.getListByOrderNum();
 			this.getMsgList()
 		},
@@ -410,7 +404,7 @@
 <style>
 	.message {
 		position: absolute;
-		top: 20px;
+		top: 50px;
 		left: 20px;
 	}
 

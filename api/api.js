@@ -1,13 +1,16 @@
 export const api = {
 	list: 'quoteinfo/list',
 	login: 'login/login',
+	
+	hasBound: 'account/info/hasBound',
+	
 	checkByCarNoOrVinNo: 'insuredinfo/checkByCarNoOrVinNo',
 	//获取客户列表
 	getUserList: 'carinfo/getUserList',
 	//搜索客户列表
 	searchUserList: 'carinfo/searchUserList',
 	//报价记录
-	getCarInfoQuote: 'carinfo/getCarInfoQuote',
+	getCarInfoQuote: 'carinfo/getCarInfoQuoteList',
 	userDetails: 'quoteinfo/quoteDetails',
 	getOrderList: 'orderinfo/getOrderList',
 	updateCustomer: 'customer/updateCustomer',
@@ -19,6 +22,8 @@ export const api = {
 	getOrderDetail: 'orderinfo/getOrderDetail',
 	//获取佣金提成列表
 	getDrawCashList: 'draw/cash/getDrawCashList',
+
+	getInsuranceList: 'draw/cash/getInsuranceList',
 	//判断用户名是否存在
 	checkUserLoginName: 'account/info/checkUserLoginName',
 	//获取验证码
@@ -29,6 +34,7 @@ export const api = {
 	registerForWX: 'account/info/registerForWX',
 	//实名认证
 	updateUserIdCard: 'account/info/updateUserIdCard',
+	
 	accountVerified: 'account/info/accountVerified',
 	//获取实名认证状态
 	getVerifiedStatById: 'idCardImg/getVerifiedStatById',
@@ -72,15 +78,33 @@ export const api = {
 	getFollowInfoByCarInfoId: 'followInfo/getFollowInfoByCarInfoId',
 	//轮播图
 	getListByOrderNum: 'swiper/getListByOrderNum',
-	
-	
-	getShowToday: 'sys/param/getShowToday',
-	
-	getRole: 'sys/param/getRole',
-	
-	getMessageList: 'message/getListByUserId',
-	updateMessageStatus: 'message/updateStatus'
 
+
+	getShowToday: 'sys/param/getShowToday',
+
+	getRole: 'sys/param/getRole',
+	getParamValue: 'sys/param/detail',
+
+	getMessageList: 'message/getListByUserId',
+	updateMessageStatus: 'message/updateStatus',
+	addAddress: 'address/add',
+	getAddressList: 'address/list',
+	updateAddress: 'address/update',
+
+	getDefaultByUserId: 'address/getDefaultByUserId',
+	deleteAddress: 'address/delete',
+
+	addFeedback: 'feedback/add',
+	getFeedbackList: 'feedback/getList',
+
+	uploadImage: 'feedback/uploadImage',
+	getPartnerList:'/partner/info/getPartnerList',
+	
+	
+	getCommission:'/commission/percentage/getCommission',
+	
+	getFeedbackListByAdmin:'feedback/list',
+	resultFeedback:'feedback/update'
 }
 export default {
 	api

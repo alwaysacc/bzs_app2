@@ -60,7 +60,11 @@
             "minified" : true
         },
         "usingComponents" : true,
-        "permission" : {}
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "城市定位"
+            }
+        }
     },
     "h5" : {
         "devServer" : {

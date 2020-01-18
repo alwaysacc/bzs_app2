@@ -1,7 +1,6 @@
 <template>
 	<view class="home">
 		<cu-custom bgColor="bg-gradual-blue" :isBack="false" :isCustom="true">
-			<block slot="left">客户列表</block>
 			<block slot="content">客户列表</block>
 			<block slot="right">
 				<text class="cuIcon-search padding" @tap="toSetRelation"></text>
@@ -291,9 +290,7 @@
 							this.list = this.list.concat(e.data.list)
 						}
 						this.maxPage = e.data.pages
-						uni.hideLoading()
 					} else {
-						uni.hideLoading()
 						uni.showToast({
 							title: '获取失败，请稍后再试',
 							icon: 'none',

@@ -27,6 +27,8 @@ Vue.prototype.$store = store
 Vue.prototype.$http = http
 Vue.prototype.$api = api.api
 App.mpType = 'app'
+Vue.prototype.statusBarHeight = uni.getSystemInfoSync().statusBarHeight
+
 const app = new Vue({
 	store,
 	...App

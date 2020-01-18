@@ -1,5 +1,15 @@
 <template>
 	<view class="home1">
+		<cu-custom bgColor="bg-gradual-blue" :isBack="false" :isCustom="true">
+			<block slot="backText">返回</block>
+			<block slot="content">我的</block>
+		</cu-custom>
+		<view class="tui-notice-board" v-if="isShow">
+			<view class="tui-icon-bg"><tui-icon name="news-fill" :size="24" color="#f54f46"></tui-icon></view>
+			<view class="tui-scorll-view" @tap="detail">
+				<view class="tui-notice" :class="[animation ? 'tui-animation' : '']">{{text}}</view>
+			</view>
+		</view>
 		<view class="flex align-center padding-xs bg-gradual-blue">
 			<!-- #ifdef H5 -->
 			<view class="cu-avatar xl round margin-left" style="background-image:url(http://alwaysacc.club/41F006CD.jpg);"></view>
@@ -20,7 +30,7 @@
 		</view>
 
 		<view class="cu-list menu">
-			<view class="cu-item arrow" @tap="toOrderList(0)">
+			<!-- <view class="cu-item arrow" @tap="toOrderList(0)">
 				<view class="content"><text class="">我的订单</text></view>
 				<view class="action"><text class="text-grey text-sm">全部订单</text></view>
 			</view>
@@ -33,7 +43,7 @@
 					</view>
 					<text>{{ item.name }}</text>
 				</view>
-			</view>
+			</view> -->
 			<view class="cu-item arrow" @tap="toQuoteRecord">
 				<view class="content">
 					<text class="cuIcon-text"></text>
@@ -71,12 +81,18 @@
 					<text class="">提成规则</text>
 				</button>
 			</view>
-			<!-- <view class="cu-item arrow">
-				<button class="content btn" @tap="toMessagge">
+			<view class="cu-item arrow">
+				<button class="content btn" @tap="toAddress">
 					<text class="cuIcon-form"></text>
-					<text class="">系统通知</text>
+					<text class="">配送地址</text>
 				</button>
-			</view> -->
+			</view>
+			<view class="cu-item arrow" v-if="user.accountId==1">
+				<button class="content btn" @tap="toFeedback">
+					<text class="cuIcon-form"></text>
+					<text class="">回复反馈</text>
+				</button>
+			</view>
 			<view class="cu-item arrow" @tap="toSetting">
 				<view class="content">
 					<text class="cuIcon-settings"></text>
@@ -94,10 +110,15 @@
 
 <script>
 import { mapState } from 'vuex';
+import tuiIcon from '@/components/icon/icon';
 export default {
 	computed: mapState(['user']),
+	components: {
+		tuiIcon
+	},
 	data() {
 		return {
+			animation: false,
 			iconList: [
 				{
 					icon: 'recharge',
@@ -126,10 +147,58 @@ export default {
 			],
 			gridCol: 4,
 			gridBorder: false,
-			userInfo: ''
+			userInfo: '',
+			isShow:false,
+			text:'',
 		};
 	},
 	methods: {
+		toFeedback(){
+			uni.navigateTo({
+				url: 'doFeedback/doFeedback',
+				success: res => {},
+				fail: () => {},
+				complete: () => {}
+			});
+		},
+		getVerifiedStatById() {
+			let param = {
+				accountId: this.user.accountId
+			}
+			this.$http.post(this.$api.getVerifiedStatById, param).then(e => {
+				if (e.code == 200) {
+					if (e.data.verified_stat == 0) {
+						this.isShow = true;
+						this.text='未实名认证，请点击前往实名认证！'
+						setTimeout(() => {
+							this.animation = true
+						}, 600)
+					} else if (e.data.verified_stat == 2) {
+						this.isShow = true;
+						this.text='审核未通过，请点击前往重新实名认证！'
+						setTimeout(() => {
+							this.animation = true
+						}, 600)
+					} 
+				}
+			})
+		},
+		detail(e) {
+			uni.navigateTo({
+				url: './commission/verified/verified',
+				success: res => {},
+				fail: () => {},
+				complete: () => {}
+			});
+		},
+		toAddress() {
+			uni.navigateTo({
+				url: 'address/address',
+				success: res => {},
+				fail: () => {},
+				complete: () => {}
+			});
+		},
 		toIn() {
 			uni.navigateTo({
 				url: 'invite/invite',
@@ -227,6 +296,12 @@ export default {
 			}
 		};
 	},
+	onLoad(options) {
+		
+	},
+	onShow() {
+		this.getVerifiedStatById()
+	},
 	created() {}
 };
 </script>
@@ -263,5 +338,139 @@ export default {
 	position: absolute;
 	right: 10%;
 	top: 6%;
+}
+
+.tui-notice-board {
+	width: 100%;
+	padding-right: 30upx;
+	box-sizing: border-box;
+	font-size: 28upx;
+	height: 60upx;
+	background: #fff8d5;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	/* #ifdef H5 */
+	top: 44px;
+	/* #endif */
+	z-index: 999;
+}
+.tui-icon-bg {
+	background: #fff8d5;
+	padding-left: 30upx;
+	position: relative;
+	z-index: 10;
+}
+
+.tui-icon-class {
+	margin-right: 12upx;
+}
+
+.tui-scorll-view {
+	flex: 1;
+	line-height: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #f54f46;
+}
+
+.tui-notice {
+	transform: translateX(100%);
+}
+
+.tui-animation {
+	-webkit-animation: tui-rolling 12s linear infinite;
+	animation: tui-rolling 12s linear infinite;
+}
+@-webkit-keyframes tui-rolling {
+	0% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(-170%);
+	}
+}
+
+@keyframes tui-rolling {
+	0% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(-170%);
+	}
+}
+
+.tui-subject {
+	padding: 100upx 30upx 30upx 30upx;
+	box-sizing: border-box;
+	font-size: 32upx;
+	font-weight: bold;
+}
+
+.tui-rolling-news {
+	width: 100%;
+	padding: 12upx 30upx;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: nowrap;
+}
+
+.tui-subject {
+	padding: 100upx 30upx 30upx 30upx;
+	box-sizing: border-box;
+	font-size: 32upx;
+	font-weight: bold;
+}
+
+.tui-rolling-news {
+	width: 100%;
+	padding: 12upx 30upx;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: nowrap;
+}
+
+.tui-swiper {
+	font-size: 28upx;
+	height: 50upx;
+	flex: 1;
+}
+
+.tui-swiper-item {
+	display: flex;
+	align-items: center;
+}
+
+.tui-news-item {
+	line-height: 28upx;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.tui-searchbox {
+	padding: 60upx 80upx;
+	box-sizing: border-box;
+}
+
+.tui-rolling-search {
+	width: 100%;
+	height: 70upx;
+	border-radius: 35upx;
+	padding: 0 40upx 0 30upx;
+	box-sizing: border-box;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: nowrap;
+	color: #999;
 }
 </style>

@@ -1,6 +1,10 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页,
 		{
+			"path": "pages/home/home",
+			"style": {}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
@@ -126,9 +130,6 @@
 			"path": "pages/user/setting/setting",
 			"style": {}
 		}, {
-			"path": "pages/user/problem/problem",
-			"style": {}
-		}, {
 			"path": "pages/customer/search/search",
 			"style": {}
 		}, {
@@ -179,28 +180,69 @@
 		}, {
 			"path": "pages/user/userMsg/userMsg",
 			"style": {}
+		}, {
+			"path": "pages/user/address/address",
+			"style": {}
+		}, {
+			"path": "pages/user/address/editAddress",
+			"style": {}
+		}, {
+			"path": "pages/quote/perfectOrder/address",
+			"style": {}
+		}, {
+			"path": "pages/user/about/about",
+			"style": {}
+		}, {
+			"path": "pages/user/setting/feedback/feedback",
+			"style": {}
+		}, {
+			"path": "pages/user/setting/problem",
+			"style": {}
+		},{
+			"path": "pages/feedback/feedbackResult/feedbackResult",
+			"style": {}
+		},{
+			"path": "pages/feedback/resultDetail/resultDetail",
+			"style": {}
+		},{
+			"path": "pages/feedback/feedback",
+			"style": {}
 		}
-	],
+        ,{
+            "path" : "pages/user/doFeedback/doFeedback",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user/doFeedback/feedBackDetail/feedBackDetail",
+            "style" : {}
+        }
+    ],
 	"tabBar": {
 		"color": "#7a7e83",
 		"selectedColor": "#0faeff",
 		"backgroundColor": "#ffffff",
 		"list": [{
-			"pagePath": "pages/main/main",
-			"text": "车险报价",
-			"iconPath": "static/img/home.png",
-			"selectedIconPath": "static/img/homeHL.png"
-		}, {
-			"pagePath": "pages/customer/customerList",
-			"text": "客户列表",
-			"iconPath": "static/img/kehu.png",
-			"selectedIconPath": "static/img/tab-kehu.png"
-		}, {
-			"pagePath": "pages/user/user",
-			"text": "我的",
-			"iconPath": "static/img/user.png",
-			"selectedIconPath": "static/img/userHL.png"
-		}]
+				"pagePath": "pages/home/home",
+				"text": "首页",
+				"iconPath": "static/img/home.png",
+				"selectedIconPath": "static/img/homeHL.png"
+			}, {
+				"pagePath": "pages/customer/customerList",
+				"text": "客户列表",
+				"iconPath": "static/img/kehu.png",
+				"selectedIconPath": "static/img/tab-kehu.png"
+			},{
+				"pagePath": "pages/user/orderList/orderList",
+				"text": "订单列表",
+				"iconPath": "static/img/orderHL.png",
+				"selectedIconPath": "static/img/order.png"
+			}, {
+				"pagePath": "pages/user/user",
+				"text": "我的",
+				"iconPath": "static/img/user.png",
+				"selectedIconPath": "static/img/userHL.png"
+			}
+		]
 	},
 	"globalStyle": {
 		"navigationBarBackgroundColor": "#0081ff",

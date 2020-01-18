@@ -44,10 +44,10 @@
 							</view>
 							<view class="text-df text-gray">车型:{{map.carInfo.carModel==null?map.carInfo.brandModel:map.carInfo.carModel}}</view>
 							<view class="text-gray text-df">
-								<text class="basis-xl margin-right">
+								<view class="basis-xl margin-right">
 									投保人:{{map.carInfo.licenseOwner}}
-								</text>
-								<text class="margin-left-xl">原价:￥{{map.quoteInfo.total}}</text>
+								</view>
+								<!-- <view class="margin-left-xl">原价:￥{{map.quoteInfo.total}}</view> -->
 							</view>
 						</view>
 						<text class="cuIcon-right"></text>
@@ -61,23 +61,25 @@
 					保险公司
 				</view>
 			</view>
+			<view v-if="isShow">
 			<view class="padding-left padding-right text-df padding-top grid  col-2">
 				<view class="">商业险优惠</view>
 				<view class="text-right">
-					{{map.quoteInfo.bizRate}}%
+					{{ commission.bizPercentage }}%
 				</view>
 			</view>
 			<view class="padding-left padding-right text-df padding-top grid  col-2">
 				<view class="">交强险优惠</view>
 				<view class="text-right">
-					{{map.quoteInfo.forceRate}}%
+					{{ commission.forcePercentage }}%
 				</view>
 			</view>
 			<view class="padding  solids-bottom padding-right padding-top grid  col-2">
 				<view class="">应返金额</view>
 				<view class="text-right">
-					<text class="text-price">0.00</text>
+					<text class="text-price">{{ commission.resultNumber }}</text>
 				</view>
+			</view>
 			</view>
 			<view class="padding  solids-bottom padding-right padding-top grid  col-2">
 				<view class=""></view>
@@ -139,7 +141,9 @@
 				orderId: '',
 				price: '',
 				imgUrl: '',
-				modalName: ''
+				modalName: '',
+				commission: {},
+				isShow: false
 			}
 		},
 		methods: {
@@ -215,6 +219,7 @@
 				});
 			},
 			toQuote(){
+				console.log(this.map);
 				uni.navigateTo({
 					url: '../../quote/choiceInsurance/choiceInsurance?map='+JSON.stringify(this.map),
 					success: res => {},
@@ -263,10 +268,31 @@
 								break;
 						}
 					}
+					let param = { paramKey: 'showResult' };
+					this.$http.post(this.$api.getParamValue, param, 1).then(e => {
+						if (e.data == 1) {
+							this.isShow = true;
+							this.getCommission();
+						}
+					});
 					uni.hideLoading()
 					this.loading = true
 				})
 			},
+			getCommission() {
+				let param = {
+					source: this.map.quoteInfo.quoteSource
+				};
+				this.$http.post(this.$api.getCommission, param, 1).then(e => {
+					this.commission = e.data;
+					var resultNumber1 = (this.map.quoteInfo.bizTotal * this.commission.bizPercentage) / 100;
+					var resultNumber2 = (this.map.quoteInfo.forceTotal * this.commission.forcePercentage) / 100;
+					this.commission.resultNumber = Number(resultNumber1.toFixed(2)) + Number(resultNumber2.toFixed(2));
+				});
+			}
+		},
+		onShow() {
+			
 		},
 		onLoad(e) {
 			if(e.quoteId){
