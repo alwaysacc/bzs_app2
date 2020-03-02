@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "u-li-load-more": "/components/uLi-load-more/uLi-load-more",
+    "tui-nomore": "/components/nomore/nomore"
+  }
+}

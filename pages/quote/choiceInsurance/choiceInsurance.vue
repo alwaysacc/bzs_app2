@@ -874,6 +874,7 @@
 				}
 			},
 			next() {
+				
 				if (this.FORCEPREMIUM.insuredAmount != 'Y' && !this.SY) {
 
 					uni.showModal({
@@ -962,8 +963,6 @@
 				/* 	this.$http.post(this.$api.Ws_GetPostPrecisePrice, param, 1).then((e) => {
 					}) */
 					
-				console.log(this.insured);
-				console.log(param);
 				uni.navigateTo({
 					url: '../relationInfo/relationInfo?param=' + JSON.stringify(param)+'&lists='+this.insured
 				})
@@ -1147,12 +1146,15 @@
 					this.cistartDate=this.date
 				}
 				this.listInsur(this.map.insuredList)
+				console.log(1);
 			} else {
 				this.detail = JSON.parse(e.detail)
 				this.bistartDate = this.detail.UserInfo.BusinessExpireDate
 				this.cistartDate = this.detail.UserInfo.ForceExpireDate
 				this.listmap()
+				console.log(2);
 			}
+			console.log(this.map);
 		}
 	}
 </script>

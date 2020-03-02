@@ -34,7 +34,7 @@
 					<text>商业险起保时间：{{map.insuredInfo.nextBusinesStartDate}}</text>
 				</view>
 			</view>
-			<view class="padding-sm grid solid-bottom col-2 align-center">
+			<view class="padding-sm grid solid-bottom col-2 align-center" v-if="quote.forceTax==1 || quote.forceTax==2">
 				<view class="">
 					<text class="margin-left-xs">交强险</text>
 				</view>
@@ -50,7 +50,7 @@
 					<text class="">{{quote.taxTotal==null?'--':'￥'+quote.taxTotal}}</text>
 				</view>
 			</view>
-			<view class="flex padding justify-between align-center">
+			<view class="flex padding justify-between align-center" v-if="quote.forceTax==0 || quote.forceTax==2">
 				<view class="action">
 					商业险
 				</view>
@@ -59,7 +59,7 @@
 					 class="text-red"></text>
 				</view>
 			</view>
-			<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom solid-bottom text-cut">
+			<view class="padding-right padding-left text-gray margin-top-xs text-sm padding-bottom solid-bottom text-cut" v-if="quote.forceTax==0 || quote.forceTax==2">
 				<text class="" v-for="(q,i) in quoteList" :key="i">{{q.insurance_name}}({{q.insurance_amount==1?'投保':q.insurance_amount}})</text>
 			</view>
 			<view class="bg" v-if="topStat">
@@ -437,7 +437,6 @@
 			},
 
 			getQuoteDetail(e) {
-				console.log(1111);
 				switch (this.source) {
 					case '1':
 						this.imgUrl = 'background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)'
@@ -503,6 +502,7 @@
 							this.quoteState = false
 						}
 						this.map = e.data
+						console.log(this.map);
 					} else {
 						uni.showToast({
 							title: '获取失败',
@@ -527,18 +527,15 @@
 			}
 		},
 		onLoad(e) {
-			console.log(this.user);
 			uni.showLoading({
 				title: '拼命加载中',
 				mask: true
 			});
 			if (e.stat == 1) {
-				console.log(1);
 				this.stat = false
 				this.price = e.price
 				this.amount = e.amount
 			}
-			console.log(e);
 			this.carInfoId = e.carInfoId
 			this.source = e.source
 			this.getQuoteDetail(e.carInfoId)

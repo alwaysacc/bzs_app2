@@ -333,7 +333,7 @@
 			},
 			getListByOrderNum() {
 				let param = {
-
+					type:1
 				}
 				this.$http.post(this.$api.getListByOrderNum, param, 1).then((e) => {
 					this.swiperList = e.data

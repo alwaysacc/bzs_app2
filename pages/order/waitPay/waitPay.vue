@@ -36,7 +36,7 @@
 
 				<view class="qrimg margin-top-xs">
 					<!-- <tki-qrcode ref="qrcode" icon="../../../static/img/rb.png" :val="val" :size="300" :onval="true" :loadMake="true" @result="qrR" /> -->
-					<tki-qrcode ref="qrcode" :val="val" :size="300" :onval="true" :loadMake="true" @result="qrR" />
+					<tki-qrcode :icon="icon" ref="qrcode" :val="val" :size="300" :onval="true" :loadMake="true" @result="qrR" />
 				</view>
 			</view>
 			<view class="padding bg">
@@ -44,6 +44,7 @@
 				<view class="margin-top-sm">1、微信扫一扫识别、付款</view>
 				<view>2、保存截图识别二维码付款。</view>
 				<view>3、二维码失效后，请刷新支付页面。</view>
+				<view>4、如已支付，请点击确认支付。</view>
 			</view>
 		</view>
 		<view class="head padding text-center align-center justify-end solid-bottom solids-top margin-top" v-if="loading">
@@ -125,7 +126,7 @@
 			},
 			toHome() {
 				uni.reLaunch({
-					url: "../../main/main"
+					url: "../../home/home"
 				})
 			},
 			orderDetail(e) {
@@ -137,17 +138,15 @@
 					if (e.code == 200) {
 						switch (e.data.quoteInfo.quoteSource) {
 							case '1':
-								this.icon = '../../../static/img/tpy.png'
+								this.icon = '/static/img/tpy.png'
 								break;
 							case '2':
-								this.icon = '../../../static/img/pa.png'
+								this.icon = '/static/img/pa.png'
 								break;
 							case '4':
-								this.icon = '../../../static/img/rb.png'
+								this.icon = '/static/img/rb.png'
 								break;
-
 						}
-
 						this.map = e.data
 						this.show = true
 						this.val = e.data.quoteInfo.payUrl

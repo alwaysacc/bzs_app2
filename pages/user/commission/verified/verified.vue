@@ -28,7 +28,7 @@
 						<view class="title">开户行地址</view>
 						<input placeholder="开户行地址" v-model="map.bankAddress" name="input"></input>
 					</view>
-					<view class="cu-form-group align-start">
+					<!-- 	<view class="cu-form-group align-start">
 						<view class="title">身份证正面</view>
 							<image :src="frontList != '' ? frontList[0] : '../../../../static/img/front.jpg'" @tap="showModal(0)" data-target="bottomModal"
 							 mode="aspectFit"></image>
@@ -37,9 +37,9 @@
 						<view class="title">身份证背面</view>
 						<image :src="backList != '' ? backList[0] : '../../../../static/img/back.jpg'" @tap="showModal(1)" data-target="bottomModal"
 						 mode="aspectFit"></image>
-					</view>
+					</view> -->
 				</form>
-			<!-- 	<view class="">
+				<!-- 	<view class="">
 					<view class="text-center" :data-url="img">
 						<image :src="frontList != '' ? frontList[0] : '../../../../static/img/front.jpg'" @tap="showModal(0)" data-target="bottomModal"
 						 mode="aspectFit"></image>
@@ -63,7 +63,7 @@
 			<view v-else>
 				<view class="padding text-center solids-bottom" v-if="verifiedStat">
 					<view>
-						<text class="">已上传，待审核</text>
+						<text class="">已提交，待审核</text>
 					</view>
 				</view>
 
@@ -118,7 +118,7 @@
 		},
 		data() {
 			return {
-				map:{},
+				map: {},
 				userName: '',
 				idCard: '',
 				isShow: true,
@@ -164,7 +164,11 @@
 					});
 					return;
 				}
-				if (this.frontPath == '') {
+				uni.showLoading({
+					title: '',
+					mask: false
+				});
+			/* 	if (this.frontPath == '') {
 					uni.showToast({
 						title: '请选择头像面图片',
 						icon: 'none'
@@ -177,8 +181,8 @@
 						icon: 'none'
 					});
 					return;
-				}
-				let stat = 0;
+				} */
+				/* let stat = 0;
 				uni.uploadFile({
 					url: this.$http.base + this.$api.accountVerified,
 					filePath: this.frontPath,
@@ -234,6 +238,32 @@
 							});
 						}
 					}
+				}); */
+				this.map.accountId = this.user.accountId
+				this.map.type = 1
+				uni.uploadFile({
+					url: this.$http.base + this.$api.accountVerified,
+					filePath: this.backPath,
+					name: 'file',
+					formData: this.map,
+					success: uploadFileRes => {
+						uni.hideLoading()
+						if (JSON.parse(uploadFileRes.data).code == 200) {
+							uni.showToast({
+								title: '成功'
+							});
+							setTimeout(function() {
+								uni.navigateBack({
+									delta: 1
+								});
+							}, 1000);
+						} else {
+							uni.showToast({
+								title: '失败，请稍后重试'
+							});
+						}
+						
+					}
 				});
 			},
 			getVerifiedStatById() {
@@ -252,16 +282,14 @@
 								title: '审核未通过',
 								content: e.data.msg,
 								success: function(res) {
-									if (res.confirm) {
-									} else if (res.cancel) {
-									}
+									if (res.confirm) {} else if (res.cancel) {}
 								}
 							});
 						} else if (e.data.verified_stat == 3) {
 							this.isShow = false;
-							this.verifiedStat=false
-							this.userName=e.data.user_name.substr(0, 1) + '**'
-							this.idCard=util.handle(e.data.id_card);
+							this.verifiedStat = false
+							this.userName = e.data.user_name.substr(0, 1) + '**'
+							this.idCard = util.handle(e.data.id_card);
 						}
 					}
 				})

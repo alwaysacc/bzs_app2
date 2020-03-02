@@ -5,21 +5,30 @@
 			<block slot="content">我的</block>
 		</cu-custom>
 		<view class="tui-notice-board" v-if="isShow">
-			<view class="tui-icon-bg"><tui-icon name="news-fill" :size="24" color="#f54f46"></tui-icon></view>
+			<view class="tui-icon-bg">
+				<tui-icon name="news-fill" :size="24" color="#f54f46"></tui-icon>
+			</view>
 			<view class="tui-scorll-view" @tap="detail">
 				<view class="tui-notice" :class="[animation ? 'tui-animation' : '']">{{text}}</view>
 			</view>
 		</view>
-		<view class="flex align-center padding-xs bg-gradual-blue">
-			<!-- #ifdef H5 -->
-			<view class="cu-avatar xl round margin-left" style="background-image:url(http://alwaysacc.club/41F006CD.jpg);"></view>
-			<!-- #endif -->
-			<!-- #ifdef MP-WEIXIN -->
-			<view class="avatar-text"><open-data type="userAvatarUrl"></open-data></view>
-			<!-- #endif -->
-			<view class="margin-left">
-				<view class="text-xxl margin-bottom-sm">{{ user.userName }}</view>
-				<view>邀请码：{{ user.invitecode }}</view>
+		<view class=" bg-gradual-blue">
+			<view v-if="user.userName"  class=" flex align-center padding-xs">
+				<!-- #ifdef H5 -->
+				<view class="cu-avatar xl round margin-left" style="background-image:url(http://alwaysacc.club/41F006CD.jpg);"></view>
+				<!-- #endif -->
+				<!-- #ifdef MP-WEIXIN -->
+				<view class="avatar-text">
+					<open-data type="userAvatarUrl"></open-data>
+				</view>
+				<!-- #endif -->
+				<view class="margin-left">
+					<view class="text-xxl margin-bottom-sm">{{ user.userName }}</view>
+					<view>邀请码：{{ user.invitecode }}</view>
+				</view>
+			</view>
+			<view v-else class="flex align-center" >
+				未登录
 			</view>
 			<!-- <view class="right-view">
 				<view class="text-xl">
@@ -109,368 +118,648 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import tuiIcon from '@/components/icon/icon';
-export default {
-	computed: mapState(['user']),
-	components: {
-		tuiIcon
-	},
-	data() {
-		return {
-			animation: false,
-			iconList: [
-				{
-					icon: 'recharge',
-					color: 'blue',
-					badge: 0,
-					name: '待支付'
-				},
-				{
-					icon: 'roundcheck',
-					color: 'blue',
-					badge: 0,
-					name: '已承保'
-				},
-				{
-					icon: 'roundclosefill',
-					color: 'blue',
-					badge: 0,
-					name: '已取消'
-				},
-				{
-					icon: 'time',
-					color: 'blue',
-					badge: 0,
-					name: '已过期'
+	import {
+		mapState
+	} from 'vuex';
+	import tuiIcon from '@/components/icon/icon';
+	export default {
+		computed: mapState(['hasLogin', 'user']),
+		components: {
+			tuiIcon
+		},
+		data() {
+			return {
+				animation: false,
+				iconList: [{
+						icon: 'recharge',
+						color: 'blue',
+						badge: 0,
+						name: '待支付'
+					},
+					{
+						icon: 'roundcheck',
+						color: 'blue',
+						badge: 0,
+						name: '已承保'
+					},
+					{
+						icon: 'roundclosefill',
+						color: 'blue',
+						badge: 0,
+						name: '已取消'
+					},
+					{
+						icon: 'time',
+						color: 'blue',
+						badge: 0,
+						name: '已过期'
+					}
+				],
+				gridCol: 4,
+				gridBorder: false,
+				userInfo: '',
+				isShow: false,
+				text: '',
+			};
+		},
+		methods: {
+			toFeedback() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'doFeedback/doFeedback',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
 				}
-			],
-			gridCol: 4,
-			gridBorder: false,
-			userInfo: '',
-			isShow:false,
-			text:'',
-		};
-	},
-	methods: {
-		toFeedback(){
-			uni.navigateTo({
-				url: 'doFeedback/doFeedback',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		getVerifiedStatById() {
-			let param = {
-				accountId: this.user.accountId
-			}
-			this.$http.post(this.$api.getVerifiedStatById, param).then(e => {
-				if (e.code == 200) {
-					if (e.data.verified_stat == 0) {
-						this.isShow = true;
-						this.text='未实名认证，请点击前往实名认证！'
-						setTimeout(() => {
-							this.animation = true
-						}, 600)
-					} else if (e.data.verified_stat == 2) {
-						this.isShow = true;
-						this.text='审核未通过，请点击前往重新实名认证！'
-						setTimeout(() => {
-							this.animation = true
-						}, 600)
-					} 
-				}
-			})
-		},
-		detail(e) {
-			uni.navigateTo({
-				url: './commission/verified/verified',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toAddress() {
-			uni.navigateTo({
-				url: 'address/address',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toIn() {
-			uni.navigateTo({
-				url: 'invite/invite',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		bindLogin() {
-			uni.navigateTo({
-				url: '../login/login'
-			});
-		},
-		bindLogout() {
-			this.logout();
-			/**
-			 * 如果需要强制登录跳转回登录页面
-			 */
-			if (this.forcedLogin) {
-				uni.reLaunch({
-					url: '../login/login'
-				});
-			}
-		},
-		toCommissionRole() {
-			uni.navigateTo({
-				url: 'commissionRule/commissionRule',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toOrderList(e) {
-			uni.navigateTo({
-				url: 'orderList/orderList?TabCur=' + e,
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toQuoteRecord() {
-			uni.navigateTo({
-				url: 'quoteRecord/quoteRecord',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toMessagge() {
-			uni.navigateTo({
-				url: 'userMsg/userMsg',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toSetting() {
-			uni.navigateTo({
-				url: 'setting/setting',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toProxy() {
-			uni.navigateTo({
-				url: 'myProxy/myProxy',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		},
-		toCommission() {
-			uni.navigateTo({
-				url: 'commission/commission',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		}
-	},
-	onShareAppMessage: function(ops) {
-		let t = this;
-		if (ops.from === 'button') {
-			// 来自页面内转发按钮
-		}
-		return {
-			title: t.user.userName + '邀请您使用保之顺车险报价平台',
-			path: 'pages/reg/reg?invitecode=' + t.user.invitecode + '&accountId=' + t.user.accountId,
-			success: function(res) {
-				// 转发成功
 			},
-			fail: function(res) {
-				// 转发失败
+			getVerifiedStatById() {
+				let param = {
+					accountId: this.user.accountId
+				}
+				this.$http.post(this.$api.getVerifiedStatById, param).then(e => {
+					if (e.code == 200) {
+						if (e.data.verified_stat == 0) {
+							this.isShow = true;
+							this.text = '未实名认证，请点击前往实名认证！'
+							setTimeout(() => {
+								this.animation = true
+							}, 600)
+						} else if (e.data.verified_stat == 2) {
+							this.isShow = true;
+							this.text = '审核未通过，请点击前往重新实名认证！'
+							setTimeout(() => {
+								this.animation = true
+							}, 600)
+						}
+					}
+				})
+			},
+			detail(e) {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: './commission/verified/verified',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toAddress() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'address/address',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toIn() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'invite/invite',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			bindLogin() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: '../login/login'
+					});
+				}
+			},
+			bindLogout() {
+				this.logout();
+				/**
+				 * 如果需要强制登录跳转回登录页面
+				 */
+				if (this.forcedLogin) {
+					uni.reLaunch({
+						url: '../login/login'
+					});
+				}
+			},
+			toCommissionRole() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'commissionRule/commissionRule',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toOrderList(e) {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'orderList/orderList?TabCur=' + e,
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toQuoteRecord() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'quoteRecord/quoteRecord',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toMessagge() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'userMsg/userMsg',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toSetting() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'setting/setting',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toProxy() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'myProxy/myProxy',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			toCommission() {
+				if (!this.hasLogin) {
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请登录后继续操作！',
+						showCancel: true,
+						cancelText: '暂不登录',
+						confirmText: '立即登录',
+						success: res => {
+							if (res.confirm) {
+								uni.navigateTo({
+									url: '../login/login',
+									success: res => {},
+									fail: () => {},
+									complete: () => {}
+								});
+							}
+							console.log(res);
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.navigateTo({
+						url: 'commission/commission',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
 			}
-		};
-	},
-	onLoad(options) {
-		
-	},
-	onShow() {
-		this.getVerifiedStatById()
-	},
-	created() {}
-};
+		},
+		onShareAppMessage: function(ops) {
+			let t = this;
+			if (ops.from === 'button') {
+				// 来自页面内转发按钮
+			}
+			return {
+				title: t.user.userName + '邀请您使用保之顺车险报价平台',
+				path: 'pages/reg/reg?invitecode=' + t.user.invitecode + '&accountId=' + t.user.accountId,
+				success: function(res) {
+					// 转发成功
+				},
+				fail: function(res) {
+					// 转发失败
+				}
+			};
+		},
+		onLoad(options) {
+
+		},
+		onShow() {
+			this.getVerifiedStatById()
+		},
+		created() {}
+	};
 </script>
 
 <style>
-.bg-gradual-blue {
-	height: 300upx;
-}
+	.bg-gradual-blue {
+		height: 300upx;
+	}
 
-.avatar-text {
-	overflow: hidden;
-	width: 120upx;
-	height: 120upx;
-	border-radius: 50%;
-}
+	.avatar-text {
+		overflow: hidden;
+		width: 120upx;
+		height: 120upx;
+		border-radius: 50%;
+	}
 
-.btn {
-	padding: 0;
-	border: none 0;
-	font: inherit;
-	color: inherit;
-	background-color: transparent;
-	cursor: pointer;
-	background-color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+	.btn {
+		padding: 0;
+		border: none 0;
+		font: inherit;
+		color: inherit;
+		background-color: transparent;
+		cursor: pointer;
+		background-color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
-.cu-btn::after {
-	border: none !important;
-}
-.right-view {
-	position: absolute;
-	right: 10%;
-	top: 6%;
-}
+	.cu-btn::after {
+		border: none !important;
+	}
 
-.tui-notice-board {
-	width: 100%;
-	padding-right: 30upx;
-	box-sizing: border-box;
-	font-size: 28upx;
-	height: 60upx;
-	background: #fff8d5;
-	display: flex;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	/* #ifdef H5 */
-	top: 44px;
-	/* #endif */
-	z-index: 999;
-}
-.tui-icon-bg {
-	background: #fff8d5;
-	padding-left: 30upx;
-	position: relative;
-	z-index: 10;
-}
+	.right-view {
+		position: absolute;
+		right: 10%;
+		top: 6%;
+	}
 
-.tui-icon-class {
-	margin-right: 12upx;
-}
+	.tui-notice-board {
+		width: 100%;
+		padding-right: 30upx;
+		box-sizing: border-box;
+		font-size: 28upx;
+		height: 60upx;
+		background: #fff8d5;
+		display: flex;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		/* #ifdef H5 */
+		top: 44px;
+		/* #endif */
+		z-index: 999;
+	}
 
-.tui-scorll-view {
-	flex: 1;
-	line-height: 1;
-	white-space: nowrap;
-	overflow: hidden;
-	color: #f54f46;
-}
+	.tui-icon-bg {
+		background: #fff8d5;
+		padding-left: 30upx;
+		position: relative;
+		z-index: 10;
+	}
 
-.tui-notice {
-	transform: translateX(100%);
-}
+	.tui-icon-class {
+		margin-right: 12upx;
+	}
 
-.tui-animation {
-	-webkit-animation: tui-rolling 12s linear infinite;
-	animation: tui-rolling 12s linear infinite;
-}
-@-webkit-keyframes tui-rolling {
-	0% {
+	.tui-scorll-view {
+		flex: 1;
+		line-height: 1;
+		white-space: nowrap;
+		overflow: hidden;
+		color: #f54f46;
+	}
+
+	.tui-notice {
 		transform: translateX(100%);
 	}
 
-	100% {
-		transform: translateX(-170%);
-	}
-}
-
-@keyframes tui-rolling {
-	0% {
-		transform: translateX(100%);
+	.tui-animation {
+		-webkit-animation: tui-rolling 12s linear infinite;
+		animation: tui-rolling 12s linear infinite;
 	}
 
-	100% {
-		transform: translateX(-170%);
+	@-webkit-keyframes tui-rolling {
+		0% {
+			transform: translateX(100%);
+		}
+
+		100% {
+			transform: translateX(-170%);
+		}
 	}
-}
 
-.tui-subject {
-	padding: 100upx 30upx 30upx 30upx;
-	box-sizing: border-box;
-	font-size: 32upx;
-	font-weight: bold;
-}
+	@keyframes tui-rolling {
+		0% {
+			transform: translateX(100%);
+		}
 
-.tui-rolling-news {
-	width: 100%;
-	padding: 12upx 30upx;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: nowrap;
-}
+		100% {
+			transform: translateX(-170%);
+		}
+	}
 
-.tui-subject {
-	padding: 100upx 30upx 30upx 30upx;
-	box-sizing: border-box;
-	font-size: 32upx;
-	font-weight: bold;
-}
+	.tui-subject {
+		padding: 100upx 30upx 30upx 30upx;
+		box-sizing: border-box;
+		font-size: 32upx;
+		font-weight: bold;
+	}
 
-.tui-rolling-news {
-	width: 100%;
-	padding: 12upx 30upx;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: nowrap;
-}
+	.tui-rolling-news {
+		width: 100%;
+		padding: 12upx 30upx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: nowrap;
+	}
 
-.tui-swiper {
-	font-size: 28upx;
-	height: 50upx;
-	flex: 1;
-}
+	.tui-subject {
+		padding: 100upx 30upx 30upx 30upx;
+		box-sizing: border-box;
+		font-size: 32upx;
+		font-weight: bold;
+	}
 
-.tui-swiper-item {
-	display: flex;
-	align-items: center;
-}
+	.tui-rolling-news {
+		width: 100%;
+		padding: 12upx 30upx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: nowrap;
+	}
 
-.tui-news-item {
-	line-height: 28upx;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
+	.tui-swiper {
+		font-size: 28upx;
+		height: 50upx;
+		flex: 1;
+	}
 
-.tui-searchbox {
-	padding: 60upx 80upx;
-	box-sizing: border-box;
-}
+	.tui-swiper-item {
+		display: flex;
+		align-items: center;
+	}
 
-.tui-rolling-search {
-	width: 100%;
-	height: 70upx;
-	border-radius: 35upx;
-	padding: 0 40upx 0 30upx;
-	box-sizing: border-box;
-	background: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: nowrap;
-	color: #999;
-}
+	.tui-news-item {
+		line-height: 28upx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.tui-searchbox {
+		padding: 60upx 80upx;
+		box-sizing: border-box;
+	}
+
+	.tui-rolling-search {
+		width: 100%;
+		height: 70upx;
+		border-radius: 35upx;
+		padding: 0 40upx 0 30upx;
+		box-sizing: border-box;
+		background: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: nowrap;
+		color: #999;
+	}
 </style>

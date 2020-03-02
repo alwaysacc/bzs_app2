@@ -93,7 +93,7 @@
 								<view class="td">险种</view>
 								<view class="td">保额/责任限额</view>
 							</view>
-							<view class="tr" v-for="item in detail.insuredList">
+							<view class="tr" v-for="item in detail.insuredList2">
 								<view class="td">{{ item.insuranceName }}</view>
 								<view class="td">{{ item.insuranceAmount == 1 ? '投保' : item.insuranceAmount }}</view>
 							</view>
@@ -167,7 +167,7 @@
 									<view class="td">险种</view>
 									<view class="td">保额/责任限额</view>
 								</view>
-								<view class="tr" v-for="item in map.insuredList">
+								<view class="tr" v-for="item in map.insuredList2">
 									<view class="td">{{ item.insurance_name }}</view>
 									<view class="td">{{ item.insurance_amount == 1 ? '投保' : item.insurance_amount }}</view>
 								</view>
@@ -297,7 +297,8 @@ export default {
 			this.$http.post(this.$api.userDetails, param).then(e => {
 				if (e.code == 200) {
 					var arr = new Array();
-					let insuredList = e.data.insuredList;
+					let listStr =JSON.stringify(e.data.insuredList);
+					let insuredList=JSON.parse(listStr)
 					for (var i = 0; i < insuredList.length; i++) {
 						if (insuredList[i].insurance_name.indexOf('不计免') != -1) {
 							arr.push(insuredList[i].insurance_name);
@@ -307,13 +308,17 @@ export default {
 					}
 					for (var j = 0; j < insuredList.length; j++) {
 						for (var i = 0; i < arr.length; i++) {
-							if(arr[i].indexOf(insuredList[j].insurance_name.substr(0,3))!=-1){
-								insuredList[j].insurance_amount=insuredList[j].insurance_amount+'(不计免)'
+							if(arr[i].replace('_不计免','')==insuredList[j].insurance_name){
+								if(insuredList[j].insurance_amount==1){
+									insuredList[j].insurance_amount='投保(不计免)'
+								}else{
+									insuredList[j].insurance_amount=insuredList[j].insurance_amount+'(不计免)'
+								}
 							}
 						}
 					}
 					this.map = e.data;
-					this.map.insuredList=insuredList
+					this.map.insuredList2=insuredList
 					this.map.carInfo.createdTime = date.formatDate(this.map.carInfo.createdTime);
 					if (this.map.insuredInfo.nextBusinesStartDate) {
 						this.over = date.getBeforeDate(this.map.insuredInfo.nextBusinesStartDate);
@@ -323,6 +328,7 @@ export default {
 					if (this.map.quote.length != 0) {
 						this.stat = false;
 					}
+					console.log(this.map);
 				}
 			});
 		},
@@ -367,13 +373,17 @@ export default {
 			}
 			for (var j = 0; j < insuredList.length; j++) {
 				for (var i = 0; i < arr.length; i++) {
-					if(arr[i].indexOf(insuredList[j].insuranceName.substr(0,3))!=-1){
-						insuredList[j].insuranceAmount=insuredList[j].insuranceAmount+'(不计免)'
+					if(arr[i].replace('_不计免','')==insuredList[j].insuranceName){
+						if(insuredList[j].insuranceAmount==1){
+							insuredList[j].insuranceAmount='投保(不计免)'
+						}else{
+							insuredList[j].insuranceAmount=insuredList[j].insuranceAmount+'(不计免)'
+						}
 					}
 				}
 			}
 			console.log(this.detail);
-			this.detail.insuredList=insuredList
+			this.detail.insuredList2=insuredList
 			console.log(this.detail);
 			let list = this.detail.listMap;
 			for (var i = 0; i < list.length; i++) {

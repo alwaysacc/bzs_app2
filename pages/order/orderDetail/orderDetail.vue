@@ -229,7 +229,7 @@
 			},
 			toPay() {
 				uni.navigateTo({
-					url: '../waitPay/waitPay?orderId=' + this.orderId,
+					url: '../waitPay/waitPay?orderId=' + this.map.orderInfo.orderId,
 					success: res => {},
 					fail: () => {},
 					complete: () => {}

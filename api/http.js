@@ -1,5 +1,5 @@
 export default {
-	// base:'http://localhost:8082/',
+	// base:'http://localhost:8088/',
 	base:'https://www.baozhishun.com/api/',
 	baseOptions(params, methods, e) {
 		if (e == null) {

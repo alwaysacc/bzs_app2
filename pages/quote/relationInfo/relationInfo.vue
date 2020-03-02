@@ -157,8 +157,8 @@
 			this.insured = prevPage.insured
 			// #endif
 			// this.param=JSON.parse(e.param)
-			console.log(this.insured);
 			this.param=JSON.parse(e.param)
+			console.log(this.param);
 			this.OBindex=this.param.personCardIDType-1
 			this.OCindex=this.param.personCardIDType-1
 		},

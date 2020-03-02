@@ -135,6 +135,7 @@ export default {
 			//this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 		},
 		toPay(e) {
+			console.log(e);
 			uni.navigateTo({
 				url: '../../order/orderDetail/orderDetail?orderId=' + e.order_id,
 				success: res => {},
@@ -160,7 +161,10 @@ export default {
 						this.list = e.data.list;
 					}
 					for (var i = 0; i < this.list.length; i++) {
+						this.list[i].pay_end_date=this.list[i].pay_end_date.replace(/-/g, "/")
+						console.log(this.list[i].pay_end_date);
 						this.list[i].lastTime=util.dateDifference(this.list[i].pay_end_date)
+						console.log(this.list[i].lastTime);
 						switch (this.list[i].quote_source) {
 							case '1':
 								this.list[i].imgUrl = 'background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)';

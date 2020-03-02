@@ -104,7 +104,11 @@ export const api = {
 	getCommission:'/commission/percentage/getCommission',
 	
 	getFeedbackListByAdmin:'feedback/list',
-	resultFeedback:'feedback/update'
+	resultFeedback:'feedback/update',
+	
+	getHeadlinesList:'headlines/getList',
+	
+	genInviteImage:'account/info/genInviteImage'
 }
 export default {
 	api

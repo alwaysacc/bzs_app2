@@ -216,6 +216,13 @@
             "path" : "pages/user/doFeedback/feedBackDetail/feedBackDetail",
             "style" : {}
         }
+        ,{
+            "path" : "pages/home/errorPage/errorPage",
+            "style" : {}
+        } ,{
+            "path" : "pages/home/newsDetail",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",

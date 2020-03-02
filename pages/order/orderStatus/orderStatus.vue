@@ -53,7 +53,7 @@
 		methods: {
 			toHome() {
 				uni.reLaunch({
-					url: "../../main/main"
+					url: "../../home/home"
 				})
 			},
 			toDetail() {

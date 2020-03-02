@@ -7,7 +7,7 @@
 				<m-input class="m-input" type="text" clearable v-model="username" placeholder="请输入账号"></m-input>
 			</view>
 			<view class="cu-form-group">
-				<view class="title">绑定微信</view>
+				<view class="title">密码</view>
 				<m-input type="password" v-model="password" placeholder="请输入密码"></m-input>
 			</view>
 			<view class="c">
@@ -126,32 +126,94 @@ export default {
 				code: this.code
 			};
 			if(this.switchA){
-				param.openId=uni.getStorageSync('openId');
-			}
-			this.$http.post(this.$api.login, param).then(e => {
-				uni.hideLoading();
-				if (e.code == 200) {
-					//this.toMain(e.data.user);
-					this.$store.commit('SET_USER', e.data);
-					this.$store.commit('login');
-					uni.showToast({
-						title: '登录成功',
-						icon: 'success',
-						mask: true
-					});
-					setTimeout(function() {
-						uni.reLaunch({
-							url: '../home/home'
+				// #ifdef H5
+				param.openCode= 'owsWp5TPvFcGQ39Oi7HP2PtaslmA'
+				this.$http.post(this.$api.login, param).then(e => {
+					uni.hideLoading();
+					if (e.code == 200) {
+						//this.toMain(e.data.user);
+						this.$store.commit('SET_USER', e.data);
+						this.$store.commit('login');
+						uni.showToast({
+							title: '登录成功',
+							icon: 'success',
+							mask: true
 						});
-					}, 1000);
-				} else {
-					uni.showToast({
-						title: e.message,
-						icon: 'none',
-						duration: 1500
-					});
-				}
-			});
+						setTimeout(function() {
+							uni.reLaunch({
+								url: '../home/home'
+							});
+						}, 1000);
+					} else {
+						uni.showToast({
+							title: e.message,
+							icon: 'none',
+							duration: 1500
+						});
+					}
+				});
+				// #endif
+				// #ifdef MP-WEIXIN
+				uni.login({
+					provider: 'weixin',
+					success: res => {
+						console.log(res);
+						param.openCode=res.code;
+						this.$http.post(this.$api.login, param).then(e => {
+							uni.hideLoading();
+							if (e.code == 200) {
+								//this.toMain(e.data.user);
+								this.$store.commit('SET_USER', e.data);
+								this.$store.commit('login');
+								uni.showToast({
+									title: '登录成功',
+									icon: 'success',
+									mask: true
+								});
+								setTimeout(function() {
+									uni.reLaunch({
+										url: '../home/home'
+									});
+								}, 1000);
+							} else {
+								uni.showToast({
+									title: e.message,
+									icon: 'none',
+									duration: 1500
+								});
+							}
+						});
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+				// #endif
+			}else{
+				this.$http.post(this.$api.login, param).then(e => {
+					uni.hideLoading();
+					if (e.code == 200) {
+						//this.toMain(e.data.user);
+						this.$store.commit('SET_USER', e.data);
+						this.$store.commit('login');
+						uni.showToast({
+							title: '登录成功',
+							icon: 'success',
+							mask: true
+						});
+						setTimeout(function() {
+							uni.reLaunch({
+								url: '../home/home'
+							});
+						}, 1000);
+					} else {
+						uni.showToast({
+							title: e.message,
+							icon: 'none',
+							duration: 1500
+						});
+					}
+				});
+			}
 			// const validUser = service.getUsers().some(function (user) {
 			//     return data.account === user.account && data.password === user.password;
 			// });

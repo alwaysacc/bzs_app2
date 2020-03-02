@@ -13,7 +13,7 @@
 				</view>
 				<!-- 	<view class="basis-xs  margin-xs padding radius">核保</view> -->
 			</view>
-			<view class="flex flex-wrap justify-between align-center solid-bottom">
+			<!-- <view class="flex flex-wrap justify-between align-center solid-bottom">
 				<view class="basis-df padding">
 					<view class="cu-avatar lg round margin-right-xs" style="background-image:url(http://bao.91bihu.com/resources/images/quote/pa.png)"></view>
 					平安车险
@@ -22,10 +22,7 @@
 					<radio :class="paQuote?'checked':''" :checked="paQuote?true:false" @tap="setA('pa')" value="A"></radio>
 					<radio :class="pa?'checked':''" :checked="pa?true:false" @tap="setB('pa')" value="A"></radio>
 				</view>
-				<!-- 	<view class="basis-xs  margin-xs padding radius">
-					<radio :class="pa?'checked':''" :checked="pa?true:false" value="A"></radio>
-				</view> -->
-			</view>
+			</view> -->
 			<view class="flex flex-wrap justify-between align-center solid-bottom">
 				<view class="basis-df padding">
 					<view class="cu-avatar lg round margin-right-xs" style="background-image:url(http://bao.91bihu.com/resources/images/quote/tpy.png)"></view>
@@ -76,27 +73,36 @@
 		methods: {
 			next() {
 				let companyList = {}
+				let quoteGroup=0
+				let submitGroup=0
 				companyList = new Array()
 				if (this.paQuote) {
+					quoteGroup=quoteGroup+2
 					companyList.push('2')
 				}
 				if (this.tpyQuote) {
+					quoteGroup=quoteGroup+1
 					companyList.push('1')
 				}
 				if (this.rbQuote) {
+					quoteGroup=quoteGroup+4
 					companyList.push('4')
 				}
 				let companyList2 = {}
 				companyList2 = new Array()
 				if (this.pa) {
+					submitGroup=submitGroup+2
 					companyList2.push('2')
 				}
 				if (this.tpy) {
+					submitGroup=submitGroup+1
 					companyList2.push('1')
 				}
 				if (this.rb) {
+					submitGroup=submitGroup+4
 					companyList2.push('4')
 				}
+				console.log(companyList);
 				if(companyList.length==0){
 					uni.showModal({
 						title: '',
@@ -112,6 +118,8 @@
 				}
 				this.param.lists=this.insured
 				let p=this.param
+				p.submitGroup=submitGroup
+				p.quoteGroup=quoteGroup
 				p.lists=this.insured
 				this.$http.post(this.$api.Ws_GetPostPrecisePrice, p).then((e) => {
 					if (e.code == 200) {
@@ -135,9 +143,10 @@
 							complete: () => {}
 						});
 					}else{
+						let data=JSON.parse(e.data)
 						uni.showModal({
 							title: '提示',
-							content: '请求频繁，请稍后重试',
+							content:data.StatusMessage,
 							showCancel: false,
 							cancelText: '',
 							confirmText: '确定',
@@ -195,9 +204,9 @@
 					case 1:
 						this.tpyQuote = true
 						break;
-					case 2:
+					/* case 2:
 						this.paQuote = true
-						break;
+						break; */
 					case 4:
 						this.rbQuote = true
 						break;
@@ -215,6 +224,7 @@
 			// #endif
 			this.param = JSON.parse(e.param)
 			this.swichCompany(this.param.source)
+			console.log(this.param);
 		}
 
 	}

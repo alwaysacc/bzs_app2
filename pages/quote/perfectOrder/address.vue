@@ -25,6 +25,10 @@
 					</tui-list-cell>
 				</block>
 			</view>
+			<view class="tui-address-new text-center">
+				<button class="cu-btn bg-blue lg" style="width: 80%;" @tap="editAddr">+新增配送地址</button>
+				<!-- <tui-button type="danger" height="88rpx" @click="editAddr">+ </tui-button> -->
+			</view>
 		</view>
 	</view>
 </template>
